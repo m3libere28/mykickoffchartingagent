@@ -7,11 +7,10 @@ const readFileAsync = util.promisify(fs.readFile);
 
 exports.prepareStandardImage = async (filePath, mimeType) => {
   try {
-    const imageBuffer = await readFileAsync(filePath);
-    // Resize the image to prevent 20MB payload limit errors and save memory on free tier
-    const resizedBuffer = await sharp(imageBuffer)
-        .resize({ width: 1400, height: 1400, fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 80 })
+    // Stream directly from disk to Sharp (avoids V8 OOM on Render free tier for 3+ images)
+    const resizedBuffer = await sharp(filePath)
+        .resize({ width: 1024, height: 1024, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 75 })
         .toBuffer();
 
     const base64Image = resizedBuffer.toString('base64');
@@ -36,13 +35,13 @@ exports.convertAndPrepareHeic = async (filePath) => {
     const outputBuffer = await heicConvert({
       buffer: inputBuffer,
       format: 'JPEG',
-      quality: 0.8
+      quality: 0.75
     });
     
     // Downscale standard dimensions
     const resizedBuffer = await sharp(outputBuffer)
-        .resize({ width: 1400, height: 1400, fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 80 })
+        .resize({ width: 1024, height: 1024, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 75 })
         .toBuffer();
 
     const base64Image = resizedBuffer.toString('base64');

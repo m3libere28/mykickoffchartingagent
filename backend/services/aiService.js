@@ -81,6 +81,7 @@ exports.generateDraftADIME = async (extractedData) => {
       model: model,
       messages: messages,
       response_format: { type: 'json_object' },
+      max_tokens: 2500, // Explicitly provide tokens for vision extraction models
       temperature: 0.2 // Low temperature for more deterministic/factual clinical extraction
     });
 
@@ -89,6 +90,6 @@ exports.generateDraftADIME = async (extractedData) => {
     return jsonOutput;
   } catch (error) {
     console.error('Error in AI Service:', error);
-    throw new Error('Failed to parse AI response or communicate with AI provider.');
+    throw new Error(`AI Provider Error: ${error.message || 'Unknown network failure.'}`);
   }
 };

@@ -1,0 +1,19 @@
+This is a de-identified sample clinical note for weight management follow-up.
+
+Patient is here for a 1-month follow-up on weight management.
+Currently complains of heartburn after dinner 3-4x a week.
+Energy is fair, sleep is 6-7 hours but interrupted.
+Appetite is strong in the evenings.
+
+Food recall:
+Breakfast: missed
+Lunch: sandwich with turkey and cheese, chips, diet soda
+Dinner: pasta with meat sauce, garlic bread
+Snacks: handful of almonds, ice cream before bed
+
+Water intake: about 30oz daily.
+
+Discussed increasing hydration to at least 64oz daily.
+Advised reducing late-night snacking to help with heartburn symptoms.
+Patient agrees to try tracking meals in MyFitnessPal 3 days next week.
+Will follow up in 2 weeks.

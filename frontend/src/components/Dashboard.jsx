@@ -108,10 +108,10 @@ const Dashboard = ({ onUploadSuccess }) => {
       setTimeout(() => setProgressMsg('Validating clinical completeness...'), 5000);
 
       const response = await uploadFiles(files);
-      if (response && response.result) {
-        onUploadSuccess(response.result);
+      if (response && (response.assessment || response.diagnosis || response.intervention || response.monitoring_evaluation)) {
+        onUploadSuccess(response);
       } else {
-        throw new Error('Invalid response format received from server');
+        throw new Error('Invalid response format received from AI server');
       }
     } catch (err) {
       console.error('Upload Error:', err);

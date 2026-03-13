@@ -147,10 +147,10 @@ const Dashboard = ({ onUploadSuccess }) => {
 
       {/* Upload Zone */}
       <div 
-        className={`relative border-2 border-dashed rounded-[2rem] p-12 text-center transition-all duration-300 ease-in-out bg-white/70 dark:bg-slate-900/50 backdrop-blur-sm ${
+        className={`relative border-2 border-dashed rounded-[2rem] p-12 text-center transition-all duration-300 ease-in-out bg-surface-50 dark:bg-surface-900/50 backdrop-blur-sm ${
           isDragging 
-            ? 'border-emerald-500 bg-emerald-50/80 dark:bg-emerald-900/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] scale-[1.02] z-10' 
-            : 'border-slate-200 dark:border-slate-800 hover:border-emerald-300 dark:hover:border-emerald-700 hover:bg-white dark:hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-200/40 dark:hover:shadow-black/20'
+            ? 'border-brand-500 bg-brand-50/80 dark:bg-brand-900/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] scale-[1.02] z-10' 
+            : 'border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 hover:bg-white dark:hover:bg-surface-800 hover:shadow-xl hover:shadow-brand-500/10 dark:hover:shadow-black/20'
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -158,8 +158,8 @@ const Dashboard = ({ onUploadSuccess }) => {
         onDrop={handleDrop}
       >
         <div className="flex justify-center mb-6">
-          <div className={`p-5 rounded-2xl transition-all duration-500 ${isDragging ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 rotate-180' : 'bg-slate-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-500 shadow-sm border border-slate-100 dark:border-slate-700'}`}>
-            <Upload size={36} strokeWidth={2} />
+          <div className={`p-4 rounded-2xl transition-all duration-500 ${isDragging ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/30 scale-110' : 'bg-surface-100 dark:bg-surface-800 text-brand-600 dark:text-brand-500 shadow-sm border border-slate-200 dark:border-slate-700'}`}>
+            <img src="/mykickoffchartingagent/logo.png" alt="Upload" className={`w-10 h-10 object-contain transition-all ${isDragging ? 'brightness-0 invert' : ''}`} />
           </div>
         </div>
         <h3 className="text-xl font-bold font-heading text-slate-800 dark:text-white mb-2">Drag & Drop Files</h3>
@@ -253,9 +253,9 @@ const Dashboard = ({ onUploadSuccess }) => {
                  <div className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center animate-in fade-in duration-500 py-6">
                      <RobotLoader />
                      
-                     <div className="mt-8 flex items-center bg-white dark:bg-slate-800/80 px-6 py-3 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-900/40">
-                         <HeartPulse size={22} className="mr-3 text-emerald-500 animate-pulse" />
-                         <p className="text-emerald-700 dark:text-emerald-400 font-bold font-heading text-lg tracking-wide">
+                     <div className="mt-8 flex items-center bg-white dark:bg-surface-800/80 px-6 py-3 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-900/40">
+                         <img src="/mykickoffchartingagent/logo.png" className="w-6 h-6 mr-3 animate-pulse object-contain" alt="Processing" />
+                         <p className="text-brand-700 dark:text-brand-400 font-bold font-heading text-lg tracking-wide">
                              {progressMsg}
                          </p>
                      </div>
@@ -266,8 +266,8 @@ const Dashboard = ({ onUploadSuccess }) => {
                     disabled={!isPhiConfirmed}
                     className={`w-full sm:w-auto px-12 py-4 font-bold font-heading tracking-wide rounded-xl shadow-[0_8px_20px_rgba(16,185,129,0.25)] transition-all duration-300 ${
                       isPhiConfirmed 
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white hover:shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:-translate-y-0.5 active:scale-[0.98]'
-                        : 'bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none border border-slate-300 dark:border-slate-600'
+                        ? 'bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-400 hover:to-accent-400 text-white hover:shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:-translate-y-0.5 active:scale-[0.98]'
+                        : 'bg-surface-100 dark:bg-surface-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none border border-slate-300 dark:border-slate-700'
                     }`}
                 >
                     Start AI Extraction

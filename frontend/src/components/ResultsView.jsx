@@ -15,17 +15,17 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-700/50 p-6 relative group transition-all duration-300">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-sm font-bold tracking-widest text-emerald-800 dark:text-emerald-400 font-heading uppercase flex items-center">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 mr-2"></span>
+        <h3 className="text-sm font-bold tracking-widest text-brand-800 dark:text-brand-400 font-heading uppercase flex items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-400 dark:bg-brand-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
             {title}
         </h3>
         <button
           onClick={() => onCopy(content, id)}
-          className="text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg p-2 transition-all duration-200 flex items-center"
+          className="text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg p-2 transition-all duration-200 flex items-center"
           title={`Copy ${title} to Clipboard`}
         >
           {copiedSection === id ? (
-            <Check size={18} className="text-emerald-500 scale-110 transition-transform" />
+            <Check size={18} className="text-brand-500 scale-110 transition-transform drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]" />
           ) : (
             <Copy size={18} className="transition-transform group-hover:scale-110" />
           )}
@@ -37,7 +37,7 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
           value={content || ''}
           onChange={(e) => onTextChange(id, e.target.value)}
           placeholder={`No ${title.toLowerCase()} content extracted. Start typing to edit...`}
-          className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-emerald-500/10 rounded-xl p-3 -mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
+          className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:focus:ring-brand-500/10 rounded-xl p-3 -mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
           spellCheck="false"
         />
       </div>
@@ -97,12 +97,12 @@ ${data.monitoring_evaluation || ''}
             onClick={handleCopyAll}
             className={`flex-1 sm:flex-none flex items-center justify-center px-6 py-2.5 font-bold rounded-xl transition-all duration-300 shadow-sm border ${
               copiedSection === 'all' 
-                ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' 
-                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 hover:shadow-md'
+                ? 'bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 border-brand-200 dark:border-brand-800' 
+                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-brand-300 dark:hover:border-brand-600 hover:text-brand-700 dark:hover:text-brand-400 hover:shadow-md'
             }`}
           >
             {copiedSection === 'all' ? (
-              <><CheckCircle2 size={18} className="mr-2 text-emerald-600 dark:text-emerald-500" /> Copied</>
+              <><CheckCircle2 size={18} className="mr-2 text-brand-600 dark:text-brand-500 drop-shadow-[0_0_5px_rgba(16,185,129,0.3)]" /> Copied</>
             ) : (
               <><Copy size={18} className="mr-2" /> Copy Full Draft</>
             )}

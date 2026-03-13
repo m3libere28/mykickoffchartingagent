@@ -212,7 +212,7 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
         {/* Header */}
         <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-10 flex justify-between items-center group">
           <div className="flex items-center space-x-3">
-             <div className="bg-gradient-to-br from-emerald-500 to-teal-500 p-2.5 rounded-xl text-white shadow-md">
+             <div className="bg-gradient-to-br from-brand-500 to-accent-500 p-2.5 rounded-xl text-white shadow-md">
                 <Calculator size={20} className="group-hover:animate-pulse" />
              </div>
              <h2 className="text-xl font-bold font-heading text-slate-800 dark:text-white">Dietitian Tools</h2>
@@ -233,7 +233,7 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
               <select 
                 value={selectedCalcId}
                 onChange={handleCalcSelect}
-                className="w-full appearance-none bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-base font-medium rounded-xl px-4 py-3.5 pr-10 hover:border-emerald-300 dark:hover:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors shadow-sm cursor-pointer"
+                className="w-full appearance-none bg-surface-50 dark:bg-surface-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-base font-medium rounded-xl px-4 py-3.5 pr-10 hover:border-brand-300 dark:hover:border-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors shadow-sm cursor-pointer"
               >
                 <option value="" disabled>Choose a calculator...</option>
                 {CATEGORIES.map(cat => {
@@ -263,10 +263,10 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
                          <div key={field.id}>
                            <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1.5">{field.label}</label>
                            {field.type === 'select' ? (
-                              <select 
+                               <select 
                                 onChange={(e) => handleInputChange(e, field.id)}
                                 value={inputs[field.id] || ''}
-                                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                                className="w-full bg-surface-50 dark:bg-surface-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 dark:focus:border-brand-400 transition-colors"
                               >
                                 <option value="" disabled>Select...</option>
                                 {field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -277,7 +277,7 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
                                 placeholder={`Enter ${field.label.toLowerCase()}...`}
                                 onChange={(e) => handleInputChange(e, field.id)}
                                 value={inputs[field.id] || ''}
-                                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                                className="w-full bg-surface-50 dark:bg-surface-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 dark:focus:border-brand-400 transition-colors"
                               />
                            )}
                          </div>
@@ -286,16 +286,16 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
                  </div>
 
                  {/* Result Card */}
-                 <div className={`mt-6 rounded-2xl p-6 transition-all duration-300 border ${result ? 'bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/40 border-emerald-200 dark:border-emerald-800/60 shadow-md transform scale-100' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 opacity-70 transform scale-95 origin-bottom'}`}>
+                 <div className={`mt-6 rounded-2xl p-6 transition-all duration-300 border ${result ? 'bg-gradient-to-br from-brand-50 to-accent-50 dark:from-brand-950/40 dark:to-accent-950/40 border-brand-200 dark:border-brand-800/60 shadow-md transform scale-100' : 'bg-surface-50 dark:bg-surface-800 border-slate-100 dark:border-slate-700 opacity-70 transform scale-95 origin-bottom'}`}>
                      <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Result</p>
                      <div className="min-h-[3rem] flex items-center justify-between">
                          {result ? (
                              <>
-                               <p className="text-2xl font-black font-heading tracking-tight text-emerald-700 dark:text-emerald-400 break-words pr-2">{result}</p>
+                               <p className="text-2xl font-black font-heading tracking-tight text-brand-700 dark:text-brand-400 break-words pr-2 drop-shadow-[0_0_5px_rgba(16,185,129,0.3)]">{result}</p>
                                {hasActiveDraft && (
                                   <button
                                      onClick={() => onInsertToDraft(`${selectedCalc.name}: ${result}`)}
-                                     className="shrink-0 flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center"
+                                     className="shrink-0 flex items-center px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center"
                                      title="Insert to Active Draft"
                                   >
                                     Insert &rarr;

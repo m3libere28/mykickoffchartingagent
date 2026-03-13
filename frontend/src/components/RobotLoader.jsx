@@ -17,16 +17,16 @@ const RobotLoader = () => {
           {/* Antenna Glowing Bulb */}
           <motion.circle 
             cx="70" cy="12" r="8"
-            className="fill-emerald-400 dark:fill-emerald-500"
+            className="fill-brand-400 dark:fill-brand-500"
             animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            style={{ filter: "drop-shadow(0 0 8px rgba(52, 211, 153, 0.8))" }}
+            style={{ filter: "drop-shadow(0 0 8px rgba(16, 185, 129, 0.8))" }}
           />
 
           {/* Glowing Aura around the Head */}
           <motion.circle
              cx="70" cy="70" r="50"
-             className="fill-emerald-400/10 dark:fill-emerald-500/10"
+             className="fill-brand-400/10 dark:fill-brand-500/10"
              animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
              style={{ filter: "blur(20px)" }}
@@ -48,8 +48,8 @@ const RobotLoader = () => {
             transition={{ repeat: Infinity, duration: 4.5, times: [0, 0.05, 0.1, 0.15, 1] }}
             style={{ transformOrigin: "70px 72px" }}
           >
-             <circle cx="52" cy="72" r="6" className="fill-emerald-400 dark:fill-emerald-500" style={{ filter: "drop-shadow(0 0 4px rgba(52, 211, 153, 0.8))" }} />
-             <circle cx="88" cy="72" r="6" className="fill-emerald-400 dark:fill-emerald-500" style={{ filter: "drop-shadow(0 0 4px rgba(52, 211, 153, 0.8))" }} />
+             <circle cx="52" cy="72" r="6" className="fill-brand-400 dark:fill-brand-500" style={{ filter: "drop-shadow(0 0 4px rgba(16, 185, 129, 0.8))" }} />
+             <circle cx="88" cy="72" r="6" className="fill-brand-400 dark:fill-brand-500" style={{ filter: "drop-shadow(0 0 4px rgba(16, 185, 129, 0.8))" }} />
           </motion.g>
 
           {/* Happy Eye Arcs (hidden normally, replace eyes if we wanted expression, but let's keep it simple) */}
@@ -66,7 +66,7 @@ const RobotLoader = () => {
           {/* Scanning Line on Body Screen */}
           <motion.line 
             x1="52" y1="130" x2="88" y2="130" 
-            className="stroke-emerald-400 dark:stroke-emerald-500" 
+            className="stroke-brand-400 dark:stroke-brand-500" 
             strokeWidth="2"
             animate={{ y: [132, 148, 132] }}
             transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
@@ -95,7 +95,7 @@ const RobotLoader = () => {
         <motion.div
           animate={{ y: [0, -25, 0], x: [0, -10, 0], rotate: [0, -15, 0] }}
           transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.2 }}
-          className="absolute -left-12 top-10 text-emerald-400/80 dark:text-emerald-500/80 drop-shadow-md z-0"
+          className="absolute -left-12 top-10 text-brand-400/80 dark:text-brand-500/80 drop-shadow-md z-0"
         >
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-md p-1">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -110,7 +110,7 @@ const RobotLoader = () => {
         <motion.div
           animate={{ y: [0, -30, 0], x: [0, 15, 0], rotate: [0, 20, 0], scale: [1, 1.1, 1] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
-          className="absolute -right-16 top-20 text-teal-400/80 dark:text-teal-500/80 drop-shadow-md z-0"
+          className="absolute -right-16 top-20 text-accent-400/80 dark:text-accent-500/80 drop-shadow-md z-0"
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-md p-1">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -131,7 +131,7 @@ const RobotLoader = () => {
         <motion.div
            animate={{ opacity: [0, 1, 0], scale: [0.5, 1, 0.5], y: [0, -15] }}
            transition={{ repeat: Infinity, duration: 2.5, ease: "easeOut", delay: 1.5 }}
-           className="absolute top-12 -left-4 w-2 h-2 rounded-full bg-emerald-300"
+           className="absolute top-12 -left-4 w-2 h-2 rounded-full bg-brand-300"
            style={{ filter: "blur(1px)" }}
         />
 

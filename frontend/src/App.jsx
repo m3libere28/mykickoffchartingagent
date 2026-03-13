@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, HeartPulse } from 'lucide-react';
+import { LogOut, HeartPulse, Calculator } from 'lucide-react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ResultsView from './components/ResultsView';
+import Calculators from './components/Calculators';
 import { checkAuthStatus, logout } from './services/api';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [resultsData, setResultsData] = useState(null);
+  const [isCalculatorsOpen, setIsCalculatorsOpen] = useState(false);
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -60,13 +62,25 @@ function App() {
               </h1>
             </div>
             
-            <button
-              onClick={handleLogout}
-              className="flex items-center px-5 py-2.5 text-sm font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50/50 rounded-xl transition-all duration-200 border border-transparent hover:border-rose-100"
-            >
-              <LogOut size={18} className="mr-2" />
-              Sign Out
-            </button>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <button
+                onClick={() => setIsCalculatorsOpen(true)}
+                className="flex items-center px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-all duration-200 border border-transparent hover:border-emerald-100/50 group"
+              >
+                <Calculator size={18} className="mr-2 group-hover:scale-110 transition-transform duration-200" />
+                <span className="hidden sm:inline">Calculators</span>
+              </button>
+              
+              <div className="w-px h-8 bg-slate-200 hidden sm:block mx-2"></div>
+              
+              <button
+                onClick={handleLogout}
+                className="flex items-center px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50/50 rounded-xl transition-all duration-200 border border-transparent hover:border-rose-100 group"
+              >
+                <LogOut size={18} className="mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+                <span className="hidden sm:inline">Sign Out</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -84,6 +98,9 @@ function App() {
             )}
         </div>
       </main>
+
+      {/* Calculators Slide-Over Overlay */}
+      <Calculators isOpen={isCalculatorsOpen} onClose={() => setIsCalculatorsOpen(false)} />
 
       {/* Footer */}
       <footer className="mt-auto py-8 text-center relative z-10">

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse } from 'lucide-react';
 import { uploadFiles } from '../services/api';
+import RobotLoader from './RobotLoader';
 
 const Dashboard = ({ onUploadSuccess }) => {
   const [files, setFiles] = useState([]);
@@ -249,33 +250,15 @@ const Dashboard = ({ onUploadSuccess }) => {
              )}
 
              {isUploading ? (
-                 <div className="w-full max-w-2xl mx-auto flex flex-col items-center animate-in fade-in duration-500">
-                     <div className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 w-full rounded-2xl p-6 shadow-sm overflow-hidden relative">
-                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-400 animate-[pulse_2s_ease-in-out_infinite]" />
-                         
-                         {/* Header Skeleton */}
-                         <div className="flex justify-between items-center mb-6">
-                            <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded-md animate-pulse"></div>
-                            <div className="h-8 w-8 bg-slate-100 dark:bg-slate-700/50 rounded-lg animate-pulse"></div>
-                         </div>
-                         
-                         {/* Body Skeletons */}
-                         <div className="space-y-5">
-                             <div className="space-y-2">
-                                <div className="h-3 w-5/6 bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse"></div>
-                                <div className="h-3 w-4/6 bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse delay-75"></div>
-                                <div className="h-3 w-full bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse delay-150"></div>
-                             </div>
-                             
-                             <div className="space-y-2 pt-2">
-                                <div className="h-3 w-3/4 bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse delay-100"></div>
-                                <div className="h-3 w-full bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse delay-200"></div>
-                             </div>
-                         </div>
+                 <div className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center animate-in fade-in duration-500 py-6">
+                     <RobotLoader />
+                     
+                     <div className="mt-8 flex items-center bg-white dark:bg-slate-800/80 px-6 py-3 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-900/40">
+                         <HeartPulse size={22} className="mr-3 text-emerald-500 animate-pulse" />
+                         <p className="text-emerald-700 dark:text-emerald-400 font-bold font-heading text-lg tracking-wide">
+                             {progressMsg}
+                         </p>
                      </div>
-                     <p className="mt-6 text-emerald-600 dark:text-emerald-400 font-semibold tracking-wide animate-pulse flex items-center">
-                         <HeartPulse size={18} className="mr-2" /> {progressMsg}
-                     </p>
                  </div>
              ) : (
                 <button

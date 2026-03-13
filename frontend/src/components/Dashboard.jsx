@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check } from 'lucide-react';
+import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse } from 'lucide-react';
 import { uploadFiles } from '../services/api';
 
 const Dashboard = ({ onUploadSuccess }) => {

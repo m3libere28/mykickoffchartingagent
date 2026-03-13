@@ -11,6 +11,20 @@ CRITICAL CONSTRAINTS:
 - If a PES statement is not supported by the note, state that clearly.
 - This output is draft documentation for clinician review only, not final charting.
 
+SUPPORTED DIETETIC ACRONYMS & ABBREVIATIONS:
+When parsing notes, understand the following common abbreviations used by dietitians:
+General: Pt (patient), Dx (diagnosis), Hx/PMH/PSH/FHx/SHx (history variants), Meds, Rx/Tx (treatment/prescription), s/p (status post), c/o (complains of), r/o (rule out), w/ (with), w/o (without), d/t (due to), AEB (as evidenced by), WNL/WFL (normal/functional limits), NAD (no acute distress).
+Intake/Output: PO (by mouth), NPO (nothing by mouth), I/O (intake & output), UOP (urine output), BM (bowel movement), tol (tolerate), app (appetite), hydr (hydration).
+GI: N/V/D/C (nausea/vomiting/diarrhea/constipation). abd (abdomen), dist (distention), Dysph (dysphagia). Note: D/C can mean diarrhea/constipation OR discharge/discontinue depending on context.
+Anthropometrics: wt/ht (weight/height), CBW/UBW/IBW/AdjBW (body weights), BMI.
+Nutrition/Care: MNT (medical nutrition therapy), NCP (nutrition care process), ADIME, PES, NFPE (nutrition-focused physical exam), POC (plan of care), supp/ONS (supplements).
+Labs: Na, K, Cl, CO2, BUN, Cr, BG/Glu (blood glucose), A1c, Ca, Mg, Phos, Alb/Prealb, WBC, Hgb, Hct, TC/HDL/LDL/TG (lipids), LFTs.
+Conditions: HTN, HLD, DM/T1DM/T2DM/GDM, CKD/AKI/ESRD, CHF, COPD, CAD, CVA, GERD, IBS/IBD/PUD.
+Support: EN/PN/TPN/PPN, TF (tube feeding), NGT/PEG, FWF (free water flush), GRV (gastric residual), PICC.
+Wounds: PI/PU/DTI (pressure injuries/ulcers), stg (stage), edema (+1/+2/+3), skin int (skin integrity).
+Action: rec (recommend), f/u (follow-up), as tol, cont (continue), dc (discontinue/discharge).
+Watch out: MS can be morphine sulfate or multiple sclerosis. SOB means shortness of breath.
+
 KICKOFF RD CHARTING REQUIREMENTS:
 Overall Tone and Focus:
 - Focus around nutrition counseling that occurred.

@@ -1,7 +1,52 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2 } from 'lucide-react';
 
+const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }) => {
+  const textareaRef = useRef(null);
+
+  // Auto-resize textarea based on content
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [content]);
+
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-700/50 p-6 relative group transition-all duration-300">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-sm font-bold tracking-widest text-emerald-800 dark:text-emerald-400 font-heading uppercase flex items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 mr-2"></span>
+            {title}
+        </h3>
+        <button
+          onClick={() => onCopy(content, id)}
+          className="text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg p-2 transition-all duration-200 flex items-center"
+          title={`Copy ${title} to Clipboard`}
+        >
+          {copiedSection === id ? (
+            <Check size={18} className="text-emerald-500 scale-110 transition-transform" />
+          ) : (
+            <Copy size={18} className="transition-transform group-hover:scale-110" />
+          )}
+        </button>
+      </div>
+      <div className="relative">
+        <textarea
+          ref={textareaRef}
+          value={content || ''}
+          onChange={(e) => onTextChange(id, e.target.value)}
+          placeholder={`No ${title.toLowerCase()} content extracted. Start typing to edit...`}
+          className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-emerald-500/10 rounded-xl p-3 -mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
+          spellCheck="false"
+        />
+      </div>
+    </div>
+  );
+};
+
 const ResultsView = ({ data, onUpdateData, onReset }) => {
+
   const [copiedSection, setCopiedSection] = useState(null);
 
   const handleTextChange = (id, newText) => {
@@ -31,50 +76,6 @@ ${data.monitoring_evaluation || ''}
     `.trim();
     
     handleCopy(fullText, 'all');
-  };
-
-  const SectionCard = ({ title, content, id }) => {
-    const textareaRef = useRef(null);
-
-    // Auto-resize textarea based on content
-    useEffect(() => {
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto';
-        textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
-      }
-    }, [content]);
-
-    return (
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-700/50 p-6 relative group transition-all duration-300">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-sm font-bold tracking-widest text-emerald-800 dark:text-emerald-400 font-heading uppercase flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 mr-2"></span>
-              {title}
-          </h3>
-          <button
-            onClick={() => handleCopy(content, id)}
-            className="text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg p-2 transition-all duration-200 flex items-center"
-            title={`Copy ${title} to Clipboard`}
-          >
-            {copiedSection === id ? (
-              <Check size={18} className="text-emerald-500 scale-110 transition-transform" />
-            ) : (
-              <Copy size={18} className="transition-transform group-hover:scale-110" />
-            )}
-          </button>
-        </div>
-        <div className="relative">
-          <textarea
-            ref={textareaRef}
-            value={content || ''}
-            onChange={(e) => handleTextChange(id, e.target.value)}
-            placeholder={`No ${title.toLowerCase()} content extracted. Start typing to edit...`}
-            className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-emerald-500/10 rounded-xl p-3 -mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
-            spellCheck="false"
-          />
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -194,10 +195,10 @@ ${data.monitoring_evaluation || ''}
 
       {/* Draft Cards */}
       <div className="space-y-6">
-        <SectionCard title="Assessment" id="assessment" content={data.assessment} />
-        <SectionCard title="Diagnosis" id="diagnosis" content={data.diagnosis} />
-        <SectionCard title="Intervention" id="intervention" content={data.intervention} />
-        <SectionCard title="Monitoring & Evaluation" id="monitoring_evaluation" content={data.monitoring_evaluation} />
+        <SectionCard title="Assessment" id="assessment" content={data.assessment} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
+        <SectionCard title="Diagnosis" id="diagnosis" content={data.diagnosis} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
+        <SectionCard title="Intervention" id="intervention" content={data.intervention} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
+        <SectionCard title="Monitoring & Evaluation" id="monitoring_evaluation" content={data.monitoring_evaluation} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
       </div>
 
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calculator, X, ChevronDown, Activity, Scale, Droplet, Flame, ArrowRightLeft, Stethoscope, Carrot } from 'lucide-react';
+import { Calculator, X, ChevronDown, Activity, Scale, Droplet, Flame, ArrowRightLeft, Stethoscope, Carrot, Info } from 'lucide-react';
 
 const CATEGORIES = [
   { id: 'anthropometrics', name: 'Anthropometrics & Weight', icon: Scale },

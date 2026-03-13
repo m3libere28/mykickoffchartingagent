@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ResultsView from './components/ResultsView';
 import Calculators from './components/Calculators';
+import SplashPage from './components/SplashPage';
 import { checkAuthStatus, logout } from './services/api';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [resultsData, setResultsData] = useState(null);
   const [isCalculatorsOpen, setIsCalculatorsOpen] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -26,6 +28,10 @@ function App() {
     setIsAuthenticated(false);
     setResultsData(null);
   };
+
+  if (showSplash) {
+    return <SplashPage onComplete={() => setShowSplash(false)} />;
+  }
 
   if (loading) {
     return (

@@ -29,10 +29,12 @@ function App() {
     setResultsData(null);
   };
 
+  // Wait for splash to finish AND auth check to finish before showing main content
   if (showSplash) {
     return <SplashPage onComplete={() => setShowSplash(false)} />;
   }
 
+  // Once splash is false, we can either Show Login (if not auth) or Auth Loading
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center relative overflow-hidden">

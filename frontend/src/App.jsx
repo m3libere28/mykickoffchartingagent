@@ -82,11 +82,11 @@ function App() {
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <div className="flex justify-between items-center h-20">
             <div 
-              className="flex items-center cursor-pointer group" 
+              className="flex flex-col items-center justify-center cursor-pointer group" 
               onClick={() => setResultsData(null)}
             >
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-2.5 rounded-xl mr-4 text-white shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
-                <HeartPulse size={22} strokeWidth={2.5} />
+              <div className="mr-4 bg-transparent p-1 rounded-xl shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
+                <img src="/logo.png" alt="Kickoff Logo" className="w-10 h-10 object-contain rounded-lg" />
               </div>
               <h1 className="text-2xl font-bold font-heading text-slate-800 dark:text-white tracking-tight flex items-center">
                 Kickoff <span className="text-emerald-600 dark:text-emerald-400 ml-1.5 font-black">V2</span>

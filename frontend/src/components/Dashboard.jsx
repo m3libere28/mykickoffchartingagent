@@ -107,10 +107,15 @@ const Dashboard = ({ onUploadSuccess }) => {
       setTimeout(() => setProgressMsg('Generating Draft ADIME...'), 2000);
       setTimeout(() => setProgressMsg('Validating clinical completeness...'), 5000);
 
-      const result = await uploadFiles(files);
-      onUploadSuccess(result);
+      const response = await uploadFiles(files);
+      if (response && response.result) {
+        onUploadSuccess(response.result);
+      } else {
+        throw new Error('Invalid response format received from server');
+      }
     } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred during processing.');
+      console.error('Upload Error:', err);
+      setError(err.response?.data?.error || err.message || 'An error occurred during processing.');
       setIsUploading(false);
       setProgressMsg('');
     }

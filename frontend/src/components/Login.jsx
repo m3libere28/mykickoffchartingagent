@@ -33,8 +33,8 @@ const Login = ({ onLoginSuccess }) => {
           <div className="inline-flex items-center justify-center p-2 bg-surface-900/50 rounded-2xl border border-white/10 mb-8 backdrop-blur-sm shadow-xl shadow-brand-500/10 hover:scale-105 transition-transform">
              <img src="/mykickoffchartingagent/logo.png" alt="Kickoff Logo" className="w-12 h-12 object-contain" />
           </div>
-          <h1 className="text-5xl font-heading font-extrabold text-white mb-6 leading-tight">
-            Streamline your <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-brand-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">clinical drafting.</span>
+          <h1 className="text-4xl sm:text-5xl font-heading font-extrabold text-white mb-6 leading-tight">
+            Streamline your <br className="hidden sm:block"/><span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-brand-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">clinical drafting.</span>
           </h1>
           <p className="text-slate-400 text-lg font-medium leading-relaxed mb-10 max-w-md">
             Kickoff Charting V2 uses advanced AI to generate structured ADIME note drafts from your de-identified uploads, letting you spend more time with patients.
@@ -62,7 +62,7 @@ const Login = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          <h2 className="text-3xl font-heading font-bold text-white text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white text-center mb-2">
             Welcome Back
           </h2>
           <p className="text-slate-400 text-sm text-center mb-10 font-medium">

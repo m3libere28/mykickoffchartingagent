@@ -212,10 +212,10 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
         {/* Header */}
         <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-10 flex justify-between items-center group">
           <div className="flex items-center space-x-3">
-             <div className="bg-gradient-to-br from-brand-500 to-accent-500 p-2.5 rounded-xl text-white shadow-md">
+             <div className="bg-gradient-to-br from-brand-500 to-accent-500 p-2 sm:p-2.5 rounded-xl text-white shadow-md">
                 <Calculator size={20} className="group-hover:animate-pulse" />
              </div>
-             <h2 className="text-xl font-bold font-heading text-slate-800 dark:text-white">Dietitian Tools</h2>
+             <h2 className="text-lg sm:text-xl font-bold font-heading text-slate-800 dark:text-white">Dietitian Tools</h2>
           </div>
           <button 
             onClick={onClose}
@@ -233,7 +233,7 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
               <select 
                 value={selectedCalcId}
                 onChange={handleCalcSelect}
-                className="w-full appearance-none bg-surface-50 dark:bg-surface-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-base font-medium rounded-xl px-4 py-3.5 pr-10 hover:border-brand-300 dark:hover:border-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors shadow-sm cursor-pointer"
+                className="w-full appearance-none bg-surface-50 dark:bg-surface-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-sm sm:text-base font-medium rounded-xl px-3 sm:px-4 py-3 sm:py-3.5 pr-10 hover:border-brand-300 dark:hover:border-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors shadow-sm cursor-pointer"
               >
                 <option value="" disabled>Choose a calculator...</option>
                 {CATEGORIES.map(cat => {
@@ -286,12 +286,12 @@ const Calculators = ({ isOpen, onClose, onInsertToDraft, hasActiveDraft }) => {
                  </div>
 
                  {/* Result Card */}
-                 <div className={`mt-6 rounded-2xl p-6 transition-all duration-300 border ${result ? 'bg-gradient-to-br from-brand-50 to-accent-50 dark:from-brand-950/40 dark:to-accent-950/40 border-brand-200 dark:border-brand-800/60 shadow-md transform scale-100' : 'bg-surface-50 dark:bg-surface-800 border-slate-100 dark:border-slate-700 opacity-70 transform scale-95 origin-bottom'}`}>
-                     <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Result</p>
+                 <div className={`mt-6 rounded-2xl p-4 sm:p-6 transition-all duration-300 border ${result ? 'bg-gradient-to-br from-brand-50 to-accent-50 dark:from-brand-950/40 dark:to-accent-950/40 border-brand-200 dark:border-brand-800/60 shadow-md transform scale-100' : 'bg-surface-50 dark:bg-surface-800 border-slate-100 dark:border-slate-700 opacity-70 transform scale-95 origin-bottom'}`}>
+                     <p className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Result</p>
                      <div className="min-h-[3rem] flex items-center justify-between">
                          {result ? (
                              <>
-                               <p className="text-2xl font-black font-heading tracking-tight text-brand-700 dark:text-brand-400 break-words pr-2 drop-shadow-[0_0_5px_rgba(16,185,129,0.3)]">{result}</p>
+                               <p className="text-xl sm:text-2xl font-black font-heading tracking-tight text-brand-700 dark:text-brand-400 break-words pr-2 drop-shadow-[0_0_5px_rgba(16,185,129,0.3)]">{result}</p>
                                {hasActiveDraft && (
                                   <button
                                      onClick={() => onInsertToDraft(`${selectedCalc.name}: ${result}`)}

@@ -85,11 +85,11 @@ function App() {
               className="flex flex-col items-center justify-center cursor-pointer group" 
               onClick={() => setResultsData(null)}
             >
-              <div className="mr-4 bg-transparent p-1 rounded-xl shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
-                <img src="/mykickoffchartingagent/logo.png" alt="Kickoff Logo" className="w-10 h-10 object-contain rounded-lg" />
+              <div className="mr-3 sm:mr-4 bg-transparent p-1 rounded-xl shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
+                <img src="/mykickoffchartingagent/logo.png" alt="Kickoff Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg" />
               </div>
-              <h1 className="text-2xl font-bold font-heading text-slate-800 dark:text-white tracking-tight flex items-center">
-                Kickoff <span className="text-emerald-600 dark:text-emerald-400 ml-1.5 font-black">V2</span>
+              <h1 className="text-xl sm:text-2xl font-bold font-heading text-slate-800 dark:text-white tracking-tight flex items-center">
+                Kickoff <span className="text-emerald-600 dark:text-emerald-400 ml-1.5 font-black hidden sm:inline">V2</span>
               </h1>
             </div>
             
@@ -104,9 +104,9 @@ function App() {
 
               <button
                 onClick={() => setIsCalculatorsOpen(true)}
-                className="flex items-center px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-xl transition-all duration-200 border border-transparent hover:border-emerald-100/50 dark:hover:border-emerald-800 group"
+                className="flex items-center px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-xl transition-all duration-200 border border-transparent hover:border-emerald-100/50 dark:hover:border-emerald-800 group"
               >
-                <Calculator size={18} className="mr-2 group-hover:scale-110 transition-transform duration-200" />
+                <Calculator size={18} className="sm:mr-2 group-hover:scale-110 transition-transform duration-200" />
                 <span className="hidden sm:inline">Calculators</span>
               </button>
               
@@ -114,9 +114,9 @@ function App() {
               
               <button
                 onClick={handleLogout}
-                className="flex items-center px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50/50 dark:hover:bg-rose-900/20 rounded-xl transition-all duration-200 border border-transparent hover:border-rose-100 dark:hover:border-rose-900/50 group"
+                className="flex items-center px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50/50 dark:hover:bg-rose-900/20 rounded-xl transition-all duration-200 border border-transparent hover:border-rose-100 dark:hover:border-rose-900/50 group"
               >
-                <LogOut size={18} className="mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+                <LogOut size={18} className="sm:mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
                 <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
@@ -125,9 +125,9 @@ function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-grow pt-32 pb-16 px-4 sm:px-6 relative flex flex-col items-center">
+      <main className="flex-grow pt-24 sm:pt-32 pb-16 px-4 sm:px-6 relative flex flex-col items-center">
         {/* Subtle background decoration */}
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-slate-100 dark:from-slate-800/50 to-transparent pointer-events-none -z-10" />
+        <div className="absolute top-0 left-0 w-full h-64 sm:h-96 bg-gradient-to-b from-slate-100 dark:from-slate-800/50 to-transparent pointer-events-none -z-10" />
         
         <div className="w-full max-w-5xl relative z-10 transition-all duration-500 ease-in-out">
             {!resultsData ? (

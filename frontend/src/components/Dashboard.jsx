@@ -127,7 +127,7 @@ const Dashboard = ({ onUploadSuccess }) => {
       
       {/* Header & Warning section */}
       <div className="mb-10 text-center sm:text-left">
-        <h2 className="text-3xl font-bold font-heading text-slate-800 dark:text-white mb-3 tracking-tight">Upload Notes</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold font-heading text-slate-800 dark:text-white mb-3 tracking-tight">Upload Notes</h2>
         
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/40 border border-amber-200/60 dark:border-amber-800/60 p-5 rounded-2xl shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-amber-400 to-orange-400 dark:from-amber-500 dark:to-orange-500" />
@@ -147,7 +147,7 @@ const Dashboard = ({ onUploadSuccess }) => {
 
       {/* Upload Zone */}
       <div 
-        className={`relative border-2 border-dashed rounded-[2rem] p-12 text-center transition-all duration-300 ease-in-out bg-surface-50 dark:bg-surface-900/50 backdrop-blur-sm ${
+        className={`relative border-2 border-dashed rounded-[2rem] p-6 flex flex-col items-center justify-center sm:p-12 text-center transition-all duration-300 ease-in-out bg-surface-50 dark:bg-surface-900/50 backdrop-blur-sm ${
           isDragging 
             ? 'border-brand-500 bg-brand-50/80 dark:bg-brand-900/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] scale-[1.02] z-10' 
             : 'border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 hover:bg-white dark:hover:bg-surface-800 hover:shadow-xl hover:shadow-brand-500/10 dark:hover:shadow-black/20'
@@ -193,9 +193,9 @@ const Dashboard = ({ onUploadSuccess }) => {
       {files.length > 0 && (
         <div className="mt-10 bg-white dark:bg-slate-800 rounded-[2rem] shadow-xl shadow-slate-200/30 dark:shadow-none border border-slate-100 dark:border-slate-700 overflow-hidden transition-all duration-500 animate-in slide-in-from-bottom-8">
           <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex justify-between items-center">
-             <h4 className="font-bold font-heading text-slate-800 dark:text-slate-200 text-lg flex items-center">
+             <h4 className="font-bold font-heading text-slate-800 dark:text-slate-200 text-base sm:text-lg flex items-center">
                 Ready to Process 
-                <span className="ml-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 py-0.5 px-2.5 rounded-full text-xs font-bold leading-tight">{files.length}</span>
+                <span className="ml-2 sm:ml-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 py-0.5 px-2 sm:px-2.5 rounded-full text-xs font-bold leading-tight">{files.length}</span>
              </h4>
              <button 
                 onClick={() => { setFiles([]); setIsPhiConfirmed(false); }}
@@ -227,11 +227,11 @@ const Dashboard = ({ onUploadSuccess }) => {
             ))}
           </ul>
           
-          <div className="p-8 bg-slate-50 dark:bg-slate-800/80 flex flex-col justify-center items-center border-t border-slate-100 dark:border-slate-700">
+          <div className="p-5 sm:p-8 bg-slate-50 dark:bg-slate-800/80 flex flex-col justify-center items-center border-t border-slate-100 dark:border-slate-700">
              
              {/* PHI Confirmation Box */}
              {!isUploading && (
-               <label className="flex items-start max-w-xl mx-auto mb-6 p-4 rounded-xl cursor-pointer bg-amber-50 dark:bg-amber-900/10 border border-amber-200/50 dark:border-amber-700/30 hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-colors group">
+               <label className="flex items-start max-w-xl mx-auto mb-6 p-3 sm:p-4 rounded-xl cursor-pointer bg-amber-50 dark:bg-amber-900/10 border border-amber-200/50 dark:border-amber-700/30 hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-colors group">
                  <div className="relative flex items-center justify-center mt-0.5">
                    <input 
                      type="checkbox" 
@@ -242,7 +242,7 @@ const Dashboard = ({ onUploadSuccess }) => {
                    <Check size={14} strokeWidth={3} className="text-white absolute opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" />
                  </div>
                  <div className="ml-3">
-                   <span className={`text-sm font-semibold transition-colors ${isPhiConfirmed ? 'text-amber-800 dark:text-amber-400' : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900'}`}>
+                   <span className={`text-xs sm:text-sm font-semibold transition-colors ${isPhiConfirmed ? 'text-amber-800 dark:text-amber-400' : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900'}`}>
                      I confirm these documents contain absolutely zero Protected Health Information (PHI).
                    </span>
                  </div>
@@ -254,8 +254,8 @@ const Dashboard = ({ onUploadSuccess }) => {
                      <RobotLoader />
                      
                      <div className="mt-8 flex items-center bg-white dark:bg-surface-800/80 px-6 py-3 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-900/40">
-                         <img src="/mykickoffchartingagent/logo.png" className="w-6 h-6 mr-3 animate-pulse object-contain" alt="Processing" />
-                         <p className="text-brand-700 dark:text-brand-400 font-bold font-heading text-lg tracking-wide">
+                         <img src="/mykickoffchartingagent/logo.png" className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 animate-pulse object-contain" alt="Processing" />
+                         <p className="text-brand-700 dark:text-brand-400 font-bold font-heading text-base sm:text-lg tracking-wide text-center">
                              {progressMsg}
                          </p>
                      </div>
@@ -264,7 +264,7 @@ const Dashboard = ({ onUploadSuccess }) => {
                 <button
                     onClick={handleProcess}
                     disabled={!isPhiConfirmed}
-                    className={`w-full sm:w-auto px-12 py-4 font-bold font-heading tracking-wide rounded-xl shadow-[0_8px_20px_rgba(16,185,129,0.25)] transition-all duration-300 ${
+                    className={`w-full sm:w-auto px-6 sm:px-12 py-3.5 sm:py-4 font-bold font-heading tracking-wide rounded-xl shadow-[0_8px_20px_rgba(16,185,129,0.25)] transition-all duration-300 ${
                       isPhiConfirmed 
                         ? 'bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-400 hover:to-accent-400 text-white hover:shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:-translate-y-0.5 active:scale-[0.98]'
                         : 'bg-surface-100 dark:bg-surface-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none border border-slate-300 dark:border-slate-700'

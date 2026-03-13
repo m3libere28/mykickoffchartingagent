@@ -13,7 +13,7 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
   }, [content]);
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-700/50 p-6 relative group transition-all duration-300">
+    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-700/50 p-4 sm:p-6 relative group transition-all duration-300">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-sm font-bold tracking-widest text-brand-800 dark:text-brand-400 font-heading uppercase flex items-center">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-400 dark:bg-brand-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
@@ -37,7 +37,7 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
           value={content || ''}
           onChange={(e) => onTextChange(id, e.target.value)}
           placeholder={`No ${title.toLowerCase()} content extracted. Start typing to edit...`}
-          className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:focus:ring-brand-500/10 rounded-xl p-3 -mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
+          className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:focus:ring-brand-500/10 rounded-xl p-3 sm:-mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
           spellCheck="false"
         />
       </div>
@@ -82,10 +82,10 @@ ${data.monitoring_evaluation || ''}
     <div className="w-full mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Top Navigation / Actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-6 border-b border-slate-200/60 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-slate-200/60 dark:border-slate-800">
         <button 
           onClick={onReset}
-          className="flex items-center text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-semibold transition-colors group mb-4 sm:mb-0 bg-white dark:bg-slate-800 px-4 py-2 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md"
+          className="flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-semibold transition-colors group mb-4 sm:mb-0 bg-white dark:bg-slate-800 px-4 py-3 sm:py-2 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md"
         >
           <ArrowLeft size={18} className="mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Upload
@@ -111,7 +111,7 @@ ${data.monitoring_evaluation || ''}
       </div>
 
       {/* Main Draft Label */}
-      <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 border border-rose-200/60 dark:border-rose-900/50 p-5 rounded-2xl mb-8 shadow-sm relative overflow-hidden group">
+      <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 border border-rose-200/60 dark:border-rose-900/50 p-4 sm:p-5 rounded-2xl mb-8 shadow-sm relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-rose-400 to-pink-400 dark:from-rose-600 dark:to-pink-600" />
         <div className="flex items-start sm:items-center text-left">
           <div className="bg-rose-100 dark:bg-rose-900/50 max-sm:p-2 sm:p-2.5 rounded-xl mr-4 shrink-0 mt-0.5 sm:mt-0 transition-transform group-hover:scale-110 duration-300">
@@ -131,7 +131,7 @@ ${data.monitoring_evaluation || ''}
 
       {/* PHI Warning */}
       {data.phi_warning && (
-        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50 p-5 rounded-2xl mb-8 shadow-sm flex items-start animate-in slide-in-from-top-4">
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50 p-4 sm:p-5 rounded-2xl mb-8 shadow-sm flex items-start animate-in slide-in-from-top-4">
           <div className="bg-amber-100/50 dark:bg-amber-900/50 p-2.5 rounded-xl mr-4 shrink-0 transition-transform hover:scale-110 duration-300">
              <AlertTriangle className="text-amber-500 dark:text-amber-500" size={24} />
           </div>
@@ -146,7 +146,7 @@ ${data.monitoring_evaluation || ''}
 
       {/* Attention Required / Validation Flags */}
       {data.needs_review && (
-        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-100 dark:border-indigo-900/50 p-6 rounded-2xl mb-10 shadow-sm relative overflow-hidden">
+        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-100 dark:border-indigo-900/50 p-5 sm:p-6 rounded-2xl mb-10 shadow-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 dark:bg-indigo-400/5 rounded-bl-full pointer-events-none" />
           
           <h4 className="text-indigo-900 dark:text-indigo-300 font-bold font-heading text-lg mb-5 flex items-center">

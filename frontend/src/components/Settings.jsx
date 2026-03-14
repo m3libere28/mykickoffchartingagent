@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { X, Settings as SettingsIcon, Save, Type, CheckSquare, AlignLeft } from 'lucide-react';
+import { X, Settings as SettingsIcon, Save, Type, CheckSquare, AlignLeft, Plus, Trash2, MessageSquare } from 'lucide-react';
 
 const defaultPreferences = {
   useBulletPoints: false,
   focusAbnormal: false,
   concisePlan: false,
-  professionalTone: true
+  professionalTone: true,
+  smartPhrases: []
 };
 
 const Settings = ({ isOpen, onClose }) => {
@@ -30,6 +31,30 @@ const Settings = ({ isOpen, onClose }) => {
       [key]: !prev[key]
     }));
     setIsSaved(false);
+  };
+
+  const [newPhrase, setNewPhrase] = useState('');
+
+  const handleAddPhrase = () => {
+    if (!newPhrase.trim()) return;
+    setPreferences(prev => ({
+      ...prev,
+      smartPhrases: [...(prev.smartPhrases || []), newPhrase.trim()]
+    }));
+    setNewPhrase('');
+    setIsSaved(false);
+  };
+
+  const handleRemovePhrase = (indexToRemove) => {
+    setPreferences(prev => ({
+      ...prev,
+      smartPhrases: (prev.smartPhrases || []).filter((_, index) => index !== indexToRemove)
+    }));
+    setIsSaved(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleAddPhrase();
   };
 
   const handleSave = () => {
@@ -114,6 +139,55 @@ const Settings = ({ isOpen, onClose }) => {
 
             </div>
           </div>
+
+          <div className="pt-4 border-t border-slate-100 dark:border-darkSurface-border/50">
+            <h3 className="text-sm font-bold tracking-widest text-slate-400 dark:text-darkSurface-muted font-heading uppercase mb-4 flex items-center">
+              <MessageSquare size={16} className="mr-2" /> Smart Phrase Library
+            </h3>
+            
+            <p className="text-xs text-slate-500 dark:text-darkSurface-muted leading-relaxed mb-4">
+              Add common sentences or goals you frequently use (e.g., "Goal: Drink 64oz water/day"). You can quickly insert these into your drafts, and the AI will prioritize using them.
+            </p>
+
+            <div className="bg-slate-50 dark:bg-darkSurface-elevated border border-slate-200 dark:border-darkSurface-border rounded-xl p-1 mb-4 flex overflow-hidden">
+              <input
+                type="text"
+                value={newPhrase}
+                onChange={(e) => setNewPhrase(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type a new phrase..."
+                className="flex-1 bg-transparent px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 focus:outline-none placeholder-slate-400 dark:placeholder-darkSurface-muted/70"
+              />
+              <button 
+                onClick={handleAddPhrase}
+                className="bg-brand-500 hover:bg-brand-600 text-white p-2.5 rounded-lg transition-colors flex items-center justify-center m-0.5"
+              >
+                <Plus size={18} />
+              </button>
+            </div>
+
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+              {(!preferences.smartPhrases || preferences.smartPhrases.length === 0) ? (
+                <div className="text-center py-6 border border-dashed border-slate-200 dark:border-darkSurface-border/80 rounded-xl text-slate-400 dark:text-darkSurface-muted/70 text-sm">
+                  No smart phrases saved.
+                </div>
+              ) : (
+                preferences.smartPhrases.map((phrase, idx) => (
+                  <div key={idx} className="flex justify-between items-start bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border p-3 rounded-xl group hover:border-slate-300 dark:hover:border-darkSurface-border/80 transition-colors">
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed flex-1 pr-4">{phrase}</p>
+                    <button 
+                      onClick={() => handleRemovePhrase(idx)}
+                      className="text-slate-300 hover:text-rose-500 dark:text-darkSurface-muted/50 dark:hover:text-rose-400 transition-colors bg-slate-50 dark:bg-darkSurface p-1.5 rounded-md opacity-0 group-hover:opacity-100 mt-[-2px] mr-[-2px]"
+                      title="Remove phrase"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
         </div>
 
         {/* Footer */}

@@ -78,6 +78,12 @@ exports.generateDraftADIME = async (extractedData) => {
     if (preferences.useBulletPoints) prefText += "- Use concise bullet points for Assessment and Intervention sections rather than narrative paragraphs.\n";
     if (preferences.focusAbnormal) prefText += "- Focus strictly on clinically significant/abnormal findings. Do not chart normal/healthy findings.\n";
     if (preferences.concisePlan) prefText += "- Keep the Plan and Goals section extremely brief and direct.\n";
+    if (preferences.smartPhrases && preferences.smartPhrases.length > 0) {
+      prefText += "- The user has specifically requested the following Smart Phrases be prioritized in the Intervention and Goals section if clinically relevant:\n";
+      preferences.smartPhrases.forEach(phrase => {
+        prefText += `  * "${phrase}"\n`;
+      });
+    }
     
     // Only push if there's actual preferences applied beyond default
     if (prefText !== "IMPORTANT USER PREFERENCES FOR THIS DRAFT:\n") {

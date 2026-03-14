@@ -1,8 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown } from 'lucide-react';
+import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown, BookmarkPlus } from 'lucide-react';
 
-const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }) => {
+const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection, smartPhrases, onInsertSmartPhrase }) => {
   const textareaRef = useRef(null);
+  const [showSmartMenu, setShowSmartMenu] = useState(false);
+  const smartMenuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (smartMenuRef.current && !smartMenuRef.current.contains(event.target)) {
+        setShowSmartMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Auto-resize textarea based on content
   useEffect(() => {
@@ -19,17 +31,52 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
             <span className="w-1.5 h-1.5 rounded-full bg-brand-400 dark:bg-brand-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
             {title}
         </h3>
-        <button
-          onClick={() => onCopy(content, id)}
-          className="text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg p-2 transition-all duration-200 flex items-center"
-          title={`Copy ${title} to Clipboard`}
-        >
-          {copiedSection === id ? (
-            <Check size={18} className="text-brand-500 scale-110 transition-transform drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]" />
-          ) : (
-            <Copy size={18} className="transition-transform group-hover:scale-110" />
+        <div className="flex items-center space-x-2">
+          {smartPhrases && smartPhrases.length > 0 && id === 'intervention' && (
+            <div className="relative" ref={smartMenuRef}>
+              <button
+                onClick={() => setShowSmartMenu(!showSmartMenu)}
+                className="text-slate-500 hover:text-brand-600 dark:text-darkSurface-muted dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg px-3 py-1.5 transition-all duration-200 flex items-center text-xs font-bold uppercase tracking-wider border border-transparent hover:border-brand-200 dark:hover:border-brand-800"
+                title="Insert Smart Phrase"
+              >
+                <BookmarkPlus size={16} className="mr-1.5" /> Phrases <ChevronDown size={12} className={`ml-1 transition-transform ${showSmartMenu ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {showSmartMenu && (
+                <div className="absolute right-0 top-full mt-2 w-72 bg-white dark:bg-darkSurface-card rounded-xl shadow-xl border border-slate-100 dark:border-darkSurface-border/80 overflow-hidden z-20 animate-in fade-in slide-in-from-top-2 duration-200 max-h-64 overflow-y-auto custom-scrollbar">
+                  <div className="px-3 py-2 border-b border-slate-50 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50">
+                    <p className="text-xs font-bold text-slate-400 dark:text-darkSurface-muted/70 uppercase tracking-widest">Insert Phrase</p>
+                  </div>
+                  <div className="flex flex-col py-1">
+                    {smartPhrases.map((phrase, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          onInsertSmartPhrase(id, phrase);
+                          setShowSmartMenu(false);
+                        }}
+                        className="px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-darkSurface-elevated transition-colors text-left border-b border-slate-50 dark:border-darkSurface-border/30 last:border-0"
+                      >
+                        {phrase}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           )}
-        </button>
+          <button
+            onClick={() => onCopy(content, id)}
+            className="text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg p-2 transition-all duration-200 flex items-center"
+            title={`Copy ${title} to Clipboard`}
+          >
+            {copiedSection === id ? (
+              <Check size={18} className="text-brand-500 scale-110 transition-transform drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]" />
+            ) : (
+              <Copy size={18} className="transition-transform group-hover:scale-110" />
+            )}
+          </button>
+        </div>
       </div>
       <div className="relative">
         <textarea
@@ -49,7 +96,21 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
 
   const [copiedSection, setCopiedSection] = useState(null);
   const [showCopyMenu, setShowCopyMenu] = useState(false);
+  const [smartPhrases, setSmartPhrases] = useState([]);
   const copyMenuRef = useRef(null);
+
+  useEffect(() => {
+    // Load smart phrases on mount
+    const saved = localStorage.getItem('kickoff_preferences');
+    if (saved) {
+      try {
+        const prefs = JSON.parse(saved);
+        if (prefs.smartPhrases) setSmartPhrases(prefs.smartPhrases);
+      } catch (e) {
+        console.error("Failed to parse settings", e);
+      }
+    }
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -64,6 +125,15 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
 
   const handleTextChange = (id, newText) => {
     onUpdateData(prev => ({ ...prev, [id]: newText }));
+  };
+
+  const handleInsertSmartPhrase = (id, phrase) => {
+    onUpdateData(prev => {
+      const currentText = prev[id] || '';
+      // Only add a newline if there's already some text
+      const separator = currentText.trim().length > 0 ? '\n\n' : '';
+      return { ...prev, [id]: `${currentText}${separator}${phrase}` };
+    });
   };
 
   const handleCopy = (text, sectionName) => {
@@ -235,10 +305,10 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
 
       {/* Draft Cards */}
       <div className="space-y-6">
-        <SectionCard title="Assessment" id="assessment" content={data.assessment} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
-        <SectionCard title="Diagnosis" id="diagnosis" content={data.diagnosis} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
-        <SectionCard title="Intervention" id="intervention" content={data.intervention} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
-        <SectionCard title="Monitoring & Evaluation" id="monitoring_evaluation" content={data.monitoring_evaluation} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
+        <SectionCard title="Assessment" id="assessment" content={data.assessment} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Diagnosis" id="diagnosis" content={data.diagnosis} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Intervention" id="intervention" content={data.intervention} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Monitoring & Evaluation" id="monitoring_evaluation" content={data.monitoring_evaluation} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
       </div>
 
       {/* Follow-Up Specific Cards */}

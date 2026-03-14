@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2, ClipboardPaste } from 'lucide-react';
+import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2, ClipboardPaste } from 'lucide-react';
 import { uploadFollowUpFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
 import emilyImg from '../assets/emily.jpg';
@@ -50,7 +50,7 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
       if (previews[file.name]) return <img src={previews[file.name]} alt="preview" className="w-8 h-8 object-cover rounded shadow-sm border border-slate-200 dark:border-darkSurface-border" />;
       return <ImageIcon className="text-brand-500" size={24} />;
     }
-    if (type.includes('pdf')) return <File className="text-rose-500" size={24} />;
+    if (type.includes('pdf')) return <FileIcon className="text-rose-500" size={24} />;
     return <FileText className="text-blue-500" size={24} />;
   };
 

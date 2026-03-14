@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ClipboardPaste } from 'lucide-react';
+import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ClipboardPaste } from 'lucide-react';
 import { uploadFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
 import emilyImg from '../assets/emily.jpg';
@@ -43,7 +43,7 @@ const Dashboard = ({ onUploadSuccess }) => {
       }
       return <ImageIcon className="text-brand-500" size={24} />;
     }
-    if (type.includes('pdf')) return <File className="text-rose-500" size={24} />;
+    if (type.includes('pdf')) return <FileIcon className="text-rose-500" size={24} />;
     return <FileText className="text-blue-500" size={24} />;
   };
 

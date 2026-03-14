@@ -185,7 +185,7 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
           </style>
         </head>
         <body>
-          \${summaryText.replace(/\\n/g, '<br/>')}
+          ${summaryText.replace(/\n/g, '<br/>')}
         </body>
       </html>
     `);

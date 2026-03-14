@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2, ClipboardPaste } from 'lucide-react';
+import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2, ClipboardPaste, Mic, MicOff } from 'lucide-react';
 import { uploadFollowUpFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
 import emilyImg from '../assets/emily.jpg';
+import { useDictation } from '../hooks/useDictation';
 
 const FollowUpDashboard = ({ onUploadSuccess }) => {
   const [previousFiles, setPreviousFiles] = useState([]);
@@ -22,6 +23,9 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
   const [newInputMode, setNewInputMode] = useState('upload');
   const [previousPastedText, setPreviousPastedText] = useState('');
   const [newPastedText, setNewPastedText] = useState('');
+
+  const { isDictating: isPrevDictating, isSupported: isDictationSupported, error: prevDictationError, toggleDictation: togglePrevDictation } = useDictation(setPreviousPastedText);
+  const { isDictating: isNewDictating, error: newDictationError, toggleDictation: toggleNewDictation } = useDictation(setNewPastedText);
 
   // Generate previews for previous files
   useEffect(() => {
@@ -116,7 +120,9 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
         newFilesToSend = [new File([blob], 'followup-notes-pasted.txt', { type: 'text/plain' })];
       }
 
-      const response = await uploadFollowUpFiles(prevFilesToSend, newFilesToSend);
+      const preferences = localStorage.getItem('kickoff_preferences');
+      const response = await uploadFollowUpFiles(prevFilesToSend, newFilesToSend, preferences);
+      
       if (response && (response.assessment || response.diagnosis || response.intervention || response.monitoring_evaluation)) {
         onUploadSuccess(response);
       } else {
@@ -208,7 +214,7 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
                 onClick={() => setPreviousInputMode('paste')}
                 className={`flex items-center px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${previousInputMode === 'paste' ? 'bg-slate-700 dark:bg-darkSurface-elevated text-white shadow-sm' : 'text-slate-400 dark:text-darkSurface-muted hover:text-slate-700 dark:hover:text-white'}`}
               >
-                <ClipboardPaste size={13} className="mr-1" /> Paste
+                <ClipboardPaste size={13} className="mr-1" /> Paste / Dictate
               </button>
             </div>
           </div>
@@ -253,18 +259,43 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
           </>
           ) : (
           /* Previous Notes Paste Zone */
-          <div className="relative rounded-xl overflow-hidden bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border shadow-sm">
-            <div className="px-4 py-2.5 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex items-center">
-              <ClipboardPaste size={14} className="text-slate-400 dark:text-darkSurface-muted mr-2" />
-              <span className="text-xs font-semibold text-slate-500 dark:text-darkSurface-muted">Paste previous visit notes</span>
-              {previousPastedText.length > 0 && (
-                <span className="ml-auto text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50">{previousPastedText.length} chars</span>
-              )}
+          <div className={`relative rounded-xl overflow-hidden bg-white dark:bg-darkSurface-card border shadow-sm transition-all duration-300 ${isPrevDictating ? 'border-brand-400 ring-4 ring-brand-500/10' : 'border-slate-200 dark:border-darkSurface-border'}`}>
+            <div className="px-4 py-2.5 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex flex-wrap items-center">
+              <div className="flex items-center mr-auto">
+                <ClipboardPaste size={14} className="text-slate-400 dark:text-darkSurface-muted mr-2 hidden sm:block" />
+                <span className="text-xs font-semibold text-slate-500 dark:text-darkSurface-muted">Paste or dictate previous notes</span>
+              </div>
+              
+              <div className="flex items-center space-x-3 mt-2 sm:mt-0 w-full sm:w-auto">
+                {isDictationSupported && (
+                  <button
+                    onClick={togglePrevDictation}
+                    type="button"
+                    className={`flex-1 sm:flex-none flex items-center justify-center px-2 py-1 rounded text-xs font-bold transition-all duration-300 ${
+                      isPrevDictating 
+                        ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 animate-pulse shadow-sm' 
+                        : 'bg-white dark:bg-darkSurface-elevated text-slate-600 dark:text-darkSurface-muted border border-slate-200 dark:border-darkSurface-border hover:bg-slate-50 dark:hover:bg-darkSurface-card hover:text-brand-600 dark:hover:text-brand-400 shadow-sm'
+                    }`}
+                  >
+                    {isPrevDictating ? (
+                      <><MicOff size={12} className="mr-1" /> Stop Listening</>
+                    ) : (
+                      <><Mic size={12} className="mr-1" /> Start Dictation</>
+                    )}
+                  </button>
+                )}
+
+                {previousPastedText.length > 0 && (
+                  <span className="text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50 hidden sm:block">
+                    {previousPastedText.length} chars
+                  </span>
+                )}
+              </div>
             </div>
             <textarea
               value={previousPastedText}
               onChange={(e) => setPreviousPastedText(e.target.value)}
-              placeholder="Paste your previous visit notes here..."
+              placeholder="Paste or dictate your previous visit notes here..."
               className="w-full min-h-[180px] p-4 text-sm text-slate-800 dark:text-slate-200 bg-transparent placeholder-slate-300 dark:placeholder-darkSurface-muted/40 focus:outline-none resize-y font-mono leading-relaxed"
             />
           </div>
@@ -306,7 +337,7 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
                 onClick={() => setNewInputMode('paste')}
                 className={`flex items-center px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${newInputMode === 'paste' ? 'bg-slate-700 dark:bg-darkSurface-elevated text-white shadow-sm' : 'text-slate-400 dark:text-darkSurface-muted hover:text-slate-700 dark:hover:text-white'}`}
               >
-                <ClipboardPaste size={13} className="mr-1" /> Paste
+                <ClipboardPaste size={13} className="mr-1" /> Paste / Dictate
               </button>
             </div>
           </div>
@@ -356,18 +387,43 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
           </>
           ) : (
           /* New Notes Paste Zone */
-          <div className="relative rounded-xl overflow-hidden bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border shadow-sm">
-            <div className="px-4 py-2.5 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex items-center">
-              <ClipboardPaste size={14} className="text-brand-500 dark:text-brand-400 mr-2" />
-              <span className="text-xs font-semibold text-slate-500 dark:text-darkSurface-muted">Paste new follow-up notes</span>
-              {newPastedText.length > 0 && (
-                <span className="ml-auto text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50">{newPastedText.length} chars</span>
-              )}
+          <div className={`relative rounded-xl overflow-hidden bg-white dark:bg-darkSurface-card border shadow-sm transition-all duration-300 ${isNewDictating ? 'border-brand-400 ring-4 ring-brand-500/10' : 'border-slate-200 dark:border-darkSurface-border'}`}>
+            <div className="px-4 py-2.5 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex flex-wrap items-center">
+              <div className="flex items-center mr-auto">
+                <ClipboardPaste size={14} className="text-brand-500 dark:text-brand-400 mr-2 hidden sm:block" />
+                <span className="text-xs font-semibold text-slate-500 dark:text-darkSurface-muted">Paste or dictate new notes</span>
+              </div>
+              
+              <div className="flex items-center space-x-3 mt-2 sm:mt-0 w-full sm:w-auto">
+                {isDictationSupported && (
+                  <button
+                    onClick={toggleNewDictation}
+                    type="button"
+                    className={`flex-1 sm:flex-none flex items-center justify-center px-2 py-1 rounded text-xs font-bold transition-all duration-300 ${
+                      isNewDictating 
+                        ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 animate-pulse shadow-sm' 
+                        : 'bg-white dark:bg-darkSurface-elevated text-slate-600 dark:text-darkSurface-muted border border-slate-200 dark:border-darkSurface-border hover:bg-slate-50 dark:hover:bg-darkSurface-card hover:text-brand-600 dark:hover:text-brand-400 shadow-sm'
+                    }`}
+                  >
+                    {isNewDictating ? (
+                      <><MicOff size={12} className="mr-1" /> Stop Listening</>
+                    ) : (
+                      <><Mic size={12} className="mr-1" /> Start Dictation</>
+                    )}
+                  </button>
+                )}
+
+                {newPastedText.length > 0 && (
+                  <span className="text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50 hidden sm:block">
+                    {newPastedText.length} chars
+                  </span>
+                )}
+              </div>
             </div>
             <textarea
               value={newPastedText}
               onChange={(e) => setNewPastedText(e.target.value)}
-              placeholder="Paste your new follow-up visit notes here...\n\nExample:\nChief Complaint: Pt returns for f/u...\nWeight History: ...\nNutrition Assessment: ...\nCounseling Provided: ...\nPlan: ..."
+              placeholder="Paste or dictate your new follow-up visit notes here...\n\nExample:\nChief Complaint: Pt returns for f/u...\nWeight History: ...\nNutrition Assessment: ...\nCounseling Provided: ...\nPlan: ..."
               className="w-full min-h-[220px] p-4 text-sm text-slate-800 dark:text-slate-200 bg-transparent placeholder-slate-300 dark:placeholder-darkSurface-muted/40 focus:outline-none resize-y font-mono leading-relaxed"
             />
           </div>
@@ -380,6 +436,14 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
         <div className="mt-8 p-4 bg-rose-50 border border-rose-100 text-rose-700 rounded-xl text-sm font-medium flex items-center shadow-sm animate-in slide-in-from-top-2">
             <AlertTriangle size={18} className="mr-3 shrink-0" />
             {error}
+        </div>
+      )}
+
+      {/* Dictation Error Messages */}
+      {(prevDictationError || newDictationError) && (
+        <div className="mt-4 p-4 bg-amber-50 border border-amber-100 text-amber-700 rounded-xl text-sm font-medium flex items-center shadow-sm animate-in slide-in-from-top-2">
+            <AlertTriangle size={18} className="mr-3 shrink-0" />
+            {prevDictationError || newDictationError}
         </div>
       )}
 

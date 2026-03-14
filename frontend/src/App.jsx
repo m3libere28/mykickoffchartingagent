@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, HeartPulse, Calculator, Moon, Sun, FileText, History } from 'lucide-react';
+import { LogOut, HeartPulse, Calculator, Moon, Sun, FileText, History, Settings as SettingsIcon } from 'lucide-react';
 import emilyImg from './assets/emily.jpg';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import FollowUpDashboard from './components/FollowUpDashboard';
 import ResultsView from './components/ResultsView';
 import Calculators from './components/Calculators';
+import Settings from './components/Settings';
 import SplashPage from './components/SplashPage';
 import BackgroundPattern from './components/BackgroundPattern';
 import { checkAuthStatus, logout } from './services/api';
@@ -15,6 +16,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [resultsData, setResultsData] = useState(null);
   const [isCalculatorsOpen, setIsCalculatorsOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState('initial'); // 'initial' or 'followup'
@@ -117,6 +119,14 @@ function App() {
                 <span className="hidden sm:inline">Calculators</span>
               </button>
               
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="p-2 sm:px-4 sm:py-2.5 text-slate-500 dark:text-darkSurface-muted hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-darkSurface-elevated rounded-xl transition-all duration-200"
+                title="Settings & Preferences"
+              >
+                <SettingsIcon size={18} className="transition-transform duration-500 hover:rotate-90" />
+              </button>
+              
               <div className="w-px h-8 bg-slate-200 dark:bg-darkSurface-border hidden sm:block mx-1"></div>
               
               <button
@@ -207,6 +217,12 @@ function App() {
           Local Draft-Assist Tool • Always review output before final charting
         </p>
       </footer>
+      {/* Settings Modal Overlay */}
+      <Settings 
+        isOpen={isSettingsOpen} 
+        onClose={() => setIsSettingsOpen(false)} 
+      />
+
     </div>
   );
 }

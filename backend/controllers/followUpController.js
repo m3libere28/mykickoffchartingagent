@@ -48,7 +48,8 @@ exports.processFollowUpFiles = async (req, res) => {
     }
 
     // STAGE 3: Follow-Up AI Extraction
-    const rawAiOutput = await followUpService.generateFollowUpDraftADIME(previousData, newData);
+    const preferences = req.body.preferences ? JSON.parse(req.body.preferences) : null;
+    const rawAiOutput = await followUpService.generateFollowUpDraftADIME(previousData, newData, preferences);
     
     if (!rawAiOutput) {
       cleanupFiles(allFiles);

@@ -37,10 +37,14 @@ export const checkAuthStatus = async () => {
   }
 };
 
-export const uploadFiles = async (files) => {
+export const uploadFiles = async (files, preferences = null) => {
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) {
     formData.append('files', files[i]);
+  }
+  
+  if (preferences) {
+    formData.append('preferences', preferences);
   }
 
   const response = await api.post('/extract-adime', formData, {
@@ -51,7 +55,7 @@ export const uploadFiles = async (files) => {
   return response.data;
 };
 
-export const uploadFollowUpFiles = async (previousFiles, newFiles) => {
+export const uploadFollowUpFiles = async (previousFiles, newFiles, preferences = null) => {
   const formData = new FormData();
   
   for (let i = 0; i < previousFiles.length; i++) {
@@ -59,6 +63,10 @@ export const uploadFollowUpFiles = async (previousFiles, newFiles) => {
   }
   for (let i = 0; i < newFiles.length; i++) {
     formData.append('newFiles', newFiles[i]);
+  }
+
+  if (preferences) {
+    formData.append('preferences', preferences);
   }
 
   const response = await api.post('/extract-followup', formData, {

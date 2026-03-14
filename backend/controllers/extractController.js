@@ -30,7 +30,8 @@ exports.processFiles = async (req, res) => {
     }
 
     // STAGE 3: AI Extraction
-    const rawAiOutput = await aiService.generateDraftADIME(extractedData);
+    const preferences = req.body.preferences ? JSON.parse(req.body.preferences) : null;
+    const rawAiOutput = await aiService.generateDraftADIME(extractedData, preferences);
     
     if (!rawAiOutput) {
        cleanupFiles(files);

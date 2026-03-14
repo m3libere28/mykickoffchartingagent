@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb } from 'lucide-react';
+import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown } from 'lucide-react';
 
 const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }) => {
   const textareaRef = useRef(null);
@@ -48,6 +48,19 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
 const ResultsView = ({ data, onUpdateData, onReset }) => {
 
   const [copiedSection, setCopiedSection] = useState(null);
+  const [showCopyMenu, setShowCopyMenu] = useState(false);
+  const copyMenuRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (copyMenuRef.current && !copyMenuRef.current.contains(event.target)) {
+        setShowCopyMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleTextChange = (id, newText) => {
     onUpdateData(prev => ({ ...prev, [id]: newText }));
@@ -57,25 +70,23 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
     if (!text) return;
     navigator.clipboard.writeText(text);
     setCopiedSection(sectionName);
-    setTimeout(() => setCopiedSection(null), 2000);
+    setTimeout(() => setCopiedSection(null), 3000);
   };
 
-  const handleCopyAll = () => {
-    const fullText = `
-ASSESSMENT:
-${data.assessment || ''}
-
-DIAGNOSIS:
-${data.diagnosis || ''}
-
-INTERVENTION:
-${data.intervention || ''}
-
-MONITORING & EVALUATION:
-${data.monitoring_evaluation || ''}
-    `.trim();
+  const handleCopyFormatted = (format) => {
+    let fullText = '';
+    
+    if (format === 'markdown') {
+      fullText = `### ASSESSMENT\n${data.assessment || ''}\n\n### DIAGNOSIS\n${data.diagnosis || ''}\n\n### INTERVENTION\n${data.intervention || ''}\n\n### MONITORING & EVALUATION\n${data.monitoring_evaluation || ''}`.trim();
+    } else if (format === 'epic') {
+      fullText = `*** ASSESSMENT ***\n${data.assessment || ''}\n\n*** DIAGNOSIS ***\n${data.diagnosis || ''}\n\n*** INTERVENTION ***\n${data.intervention || ''}\n\n*** MONITORING & EVALUATION ***\n${data.monitoring_evaluation || ''}`.trim();
+    } else {
+      // Plain text
+      fullText = `ASSESSMENT:\n${data.assessment || ''}\n\nDIAGNOSIS:\n${data.diagnosis || ''}\n\nINTERVENTION:\n${data.intervention || ''}\n\nMONITORING & EVALUATION:\n${data.monitoring_evaluation || ''}`.trim();
+    }
     
     handleCopy(fullText, 'all');
+    setShowCopyMenu(false); // Close menu after copy
   };
 
   return (
@@ -91,10 +102,10 @@ ${data.monitoring_evaluation || ''}
           Back to Upload
         </button>
         
-        <div className="flex space-x-3 w-full sm:w-auto">
+        <div className="flex space-x-3 w-full sm:w-auto relative" ref={copyMenuRef}>
           {/* Action Bar */}
           <button
-            onClick={handleCopyAll}
+            onClick={() => setShowCopyMenu(!showCopyMenu)}
             className={`flex-1 sm:flex-none flex items-center justify-center px-6 py-2.5 font-bold rounded-xl transition-all duration-300 shadow-sm border ${
               copiedSection === 'all' 
                 ? 'bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 border-brand-200 dark:border-brand-800' 
@@ -102,11 +113,40 @@ ${data.monitoring_evaluation || ''}
             }`}
           >
             {copiedSection === 'all' ? (
-              <><CheckCircle2 size={18} className="mr-2 text-brand-600 dark:text-brand-500 drop-shadow-[0_0_5px_rgba(16,185,129,0.3)]" /> Copied</>
+              <><CheckCircle2 size={18} className="mr-2 text-brand-600 dark:text-brand-500 drop-shadow-[0_0_5px_rgba(16,185,129,0.3)]" /> Copied Text</>
             ) : (
-              <><Copy size={18} className="mr-2" /> Copy Full Draft</>
+              <><Copy size={18} className="mr-2" /> Copy Full Draft <ChevronDown size={14} className={`ml-2 transition-transform duration-200 ${showCopyMenu ? 'rotate-180' : ''}`} /></>
             )}
           </button>
+
+          {/* Copy Dropdown Menu */}
+          {showCopyMenu && (
+            <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-darkSurface-card rounded-xl shadow-xl border border-slate-100 dark:border-darkSurface-border/80 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="px-3 py-2 border-b border-slate-50 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50">
+                <p className="text-xs font-bold text-slate-400 dark:text-darkSurface-muted/70 uppercase tracking-widest">Select EMR Format</p>
+              </div>
+              <div className="flex flex-col py-1">
+                <button
+                  onClick={() => handleCopyFormatted('plain')}
+                  className="px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-darkSurface-muted flex items-center hover:bg-slate-50 dark:hover:bg-darkSurface-elevated transition-colors text-left"
+                >
+                  Plain Text <span className="ml-auto text-xs font-normal text-slate-400 dark:text-darkSurface-muted/50">Standard</span>
+                </button>
+                <button
+                  onClick={() => handleCopyFormatted('epic')}
+                  className="px-4 py-2.5 text-sm font-semibold text-brand-700 dark:text-brand-400 flex items-center hover:bg-brand-50 dark:hover:bg-brand-900/30 transition-colors text-left"
+                >
+                  Epic Format <span className="ml-auto text-xs font-normal text-brand-400/70">*** Header ***</span>
+                </button>
+                <button
+                  onClick={() => handleCopyFormatted('markdown')}
+                  className="px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-darkSurface-muted flex items-center hover:bg-slate-50 dark:hover:bg-darkSurface-elevated transition-colors text-left"
+                >
+                  Markdown <span className="ml-auto text-xs font-normal text-slate-400 dark:text-darkSurface-muted/50">### Header</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

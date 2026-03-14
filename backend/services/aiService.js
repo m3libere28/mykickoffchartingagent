@@ -73,6 +73,18 @@ exports.generateDraftADIME = async (extractedData) => {
     { role: 'system', content: SYSTEM_PROMPT }
   ];
 
+  if (preferences) {
+    let prefText = "IMPORTANT USER PREFERENCES FOR THIS DRAFT:\n";
+    if (preferences.useBulletPoints) prefText += "- Use concise bullet points for Assessment and Intervention sections rather than narrative paragraphs.\n";
+    if (preferences.focusAbnormal) prefText += "- Focus strictly on clinically significant/abnormal findings. Do not chart normal/healthy findings.\n";
+    if (preferences.concisePlan) prefText += "- Keep the Plan and Goals section extremely brief and direct.\n";
+    
+    // Only push if there's actual preferences applied beyond default
+    if (prefText !== "IMPORTANT USER PREFERENCES FOR THIS DRAFT:\n") {
+        messages.push({ role: 'system', content: prefText });
+    }
+  }
+
   let userContent = [];
 
   // Add extracted text

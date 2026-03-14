@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ClipboardPaste } from 'lucide-react';
+import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ClipboardPaste, Mic, MicOff } from 'lucide-react';
 import { uploadFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
 import emilyImg from '../assets/emily.jpg';
+import { useDictation } from '../hooks/useDictation';
 
 const Dashboard = ({ onUploadSuccess }) => {
   const [files, setFiles] = useState([]);
@@ -16,6 +17,8 @@ const Dashboard = ({ onUploadSuccess }) => {
   const [pastedText, setPastedText] = useState('');
   
   const fileInputRef = useRef(null);
+
+  const { isDictating, isSupported: isDictationSupported, error: dictationError, toggleDictation } = useDictation(setPastedText);
 
   // Generate object URLs for image previews
   useEffect(() => {
@@ -119,7 +122,9 @@ const Dashboard = ({ onUploadSuccess }) => {
         filesToUpload = [new File([blob], 'pasted-notes.txt', { type: 'text/plain' })];
       }
 
-      const response = await uploadFiles(filesToUpload);
+      const preferences = localStorage.getItem('kickoff_preferences');
+      const response = await uploadFiles(filesToUpload, preferences);
+      
       if (response && (response.assessment || response.diagnosis || response.intervention || response.monitoring_evaluation)) {
         onUploadSuccess(response);
       } else {
@@ -179,7 +184,7 @@ const Dashboard = ({ onUploadSuccess }) => {
             }`}
           >
             <ClipboardPaste size={15} className="mr-1.5" />
-            Paste Text
+            Paste / Dictate
           </button>
         </div>
       </div>
@@ -222,18 +227,43 @@ const Dashboard = ({ onUploadSuccess }) => {
       </div>
       ) : (
       /* Paste Text Zone */
-      <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border shadow-sm transition-all duration-300">
-        <div className="px-5 py-3 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex items-center">
-          <ClipboardPaste size={16} className="text-slate-400 dark:text-darkSurface-muted mr-2" />
-          <span className="text-sm font-semibold text-slate-600 dark:text-darkSurface-muted">Paste or type your clinical notes below</span>
-          {pastedText.length > 0 && (
-            <span className="ml-auto text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50">{pastedText.length} characters</span>
-          )}
+      <div className={`relative rounded-2xl overflow-hidden bg-white dark:bg-darkSurface-card border shadow-sm transition-all duration-300 ${isDictating ? 'border-brand-400 ring-4 ring-brand-500/10' : 'border-slate-200 dark:border-darkSurface-border'}`}>
+        <div className="px-5 py-3 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex flex-wrap items-center">
+          <div className="flex items-center mr-auto">
+            <ClipboardPaste size={16} className="text-slate-400 dark:text-darkSurface-muted mr-2 hidden sm:block" />
+            <span className="text-sm font-semibold text-slate-600 dark:text-darkSurface-muted">Paste or dictate clinical notes</span>
+          </div>
+          
+          <div className="flex items-center space-x-3 mt-2 sm:mt-0 w-full sm:w-auto">
+            {isDictationSupported && (
+              <button
+                onClick={toggleDictation}
+                type="button"
+                className={`flex-1 sm:flex-none flex items-center justify-center px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${
+                  isDictating 
+                    ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 animate-pulse shadow-sm' 
+                    : 'bg-white dark:bg-darkSurface-elevated text-slate-600 dark:text-darkSurface-muted border border-slate-200 dark:border-darkSurface-border hover:bg-slate-50 dark:hover:bg-darkSurface-card hover:text-brand-600 dark:hover:text-brand-400 shadow-sm'
+                }`}
+              >
+                {isDictating ? (
+                  <><MicOff size={14} className="mr-1.5" /> Stop Listening</>
+                ) : (
+                  <><Mic size={14} className="mr-1.5" /> Start Dictation</>
+                )}
+              </button>
+            )}
+
+            {pastedText.length > 0 && (
+              <span className="text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50 hidden sm:block">
+                {pastedText.length} chars
+              </span>
+            )}
+          </div>
         </div>
         <textarea
           value={pastedText}
           onChange={(e) => setPastedText(e.target.value)}
-          placeholder="Paste your de-identified clinical notes here...\n\nExample:\nChief Complaint: Pt c/o difficulty managing blood sugar...\nPMH: T2DM, HTN, HLD...\nNutrition Assessment: ...\nCounseling Provided: ...\nPlan: ..."
+          placeholder="Paste or dictate your de-identified clinical notes here...\n\nExample:\nChief Complaint: Pt c/o difficulty managing blood sugar...\nPMH: T2DM, HTN, HLD...\nNutrition Assessment: ...\nCounseling Provided: ...\nPlan: ..."
           className="w-full min-h-[280px] sm:min-h-[320px] p-5 text-sm text-slate-800 dark:text-slate-200 bg-transparent placeholder-slate-300 dark:placeholder-darkSurface-muted/40 focus:outline-none resize-y font-mono leading-relaxed"
         />
       </div>
@@ -244,6 +274,14 @@ const Dashboard = ({ onUploadSuccess }) => {
         <div className="mt-8 p-4 bg-rose-50 border border-rose-100 text-rose-700 rounded-xl text-sm font-medium flex items-center shadow-sm animate-in slide-in-from-top-2">
             <AlertTriangle size={18} className="mr-3 shrink-0" />
             {error}
+        </div>
+      )}
+
+      {/* Dictation Error Message */}
+      {dictationError && (
+        <div className="mt-4 p-4 bg-amber-50 border border-amber-100 text-amber-700 rounded-xl text-sm font-medium flex items-center shadow-sm animate-in slide-in-from-top-2">
+            <AlertTriangle size={18} className="mr-3 shrink-0" />
+            {dictationError}
         </div>
       )}
 

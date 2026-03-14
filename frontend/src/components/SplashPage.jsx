@@ -53,9 +53,9 @@ const SplashPage = ({ onComplete }) => {
         </div>
         
         {/* Luxurious Typography Title Area with Framer Motion */}
-        <div className="mt-8 relative w-full flex flex-col items-center h-40">
+        <div className="mt-8 relative w-full flex flex-col items-center min-h-[160px]">
            
-           <div className="relative overflow-hidden pt-4 pb-2 px-2 mt-4 flex flex-col items-center text-center">
+           <div className="relative pt-4 pb-2 px-2 mt-4 flex flex-col items-center text-center">
              <motion.h1 
                className="text-brand-800 dark:text-brand-300 text-5xl sm:text-6xl md:text-7xl text-center whitespace-normal sm:whitespace-nowrap leading-tight font-lux tracking-wide font-medium"
                initial={{ opacity: 0, y: 30 }}

@@ -82,14 +82,14 @@ const Dashboard = ({ onUploadSuccess }) => {
     }
   }, []);
 
-  const handleDrop = useCallback((e) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       validateAndAddFiles(e.dataTransfer.files);
     }
-  }, [files]);
+  };
 
   const handleFileSelect = (e) => {
     if (e.target.files && e.target.files.length > 0) {

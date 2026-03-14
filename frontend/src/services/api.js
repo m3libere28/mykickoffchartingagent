@@ -32,7 +32,7 @@ export const checkAuthStatus = async () => {
   try {
     const response = await api.get('/auth/status');
     return response.data.authenticated;
-  } catch (error) {
+  } catch {
     return false;
   }
 };

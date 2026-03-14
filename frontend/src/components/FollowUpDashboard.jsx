@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Upload, X, File as FileIcon, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2, ClipboardPaste } from 'lucide-react';
 import { uploadFollowUpFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
@@ -78,16 +78,6 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
     setter(prev => [...prev, ...validFiles]);
   };
 
-  const createDragHandlers = (setDragging) => ({
-    onDragEnter: (e) => { e.preventDefault(); e.stopPropagation(); setDragging(true); },
-    onDragLeave: (e) => { e.preventDefault(); e.stopPropagation(); setDragging(false); },
-    onDragOver: (e) => { e.preventDefault(); e.stopPropagation(); setDragging(true); },
-    onDrop: (e) => {
-      e.preventDefault(); e.stopPropagation(); setDragging(false);
-      return e.dataTransfer.files;
-    }
-  });
-
   const hasNewContent = newInputMode === 'upload' ? newFiles.length > 0 : newPastedText.trim().length > 0;
 
   const handleProcess = async () => {
@@ -131,8 +121,6 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
       setProgressMsg('');
     }
   };
-
-  const totalFiles = previousFiles.length + newFiles.length;
 
   const renderFileList = (files, previews, removeFile) => (
     <ul className="divide-y divide-slate-50 dark:divide-darkSurface-border/50">

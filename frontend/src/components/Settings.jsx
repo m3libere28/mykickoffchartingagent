@@ -18,6 +18,7 @@ const Settings = ({ isOpen, onClose }) => {
     const saved = localStorage.getItem('kickoff_preferences');
     if (saved) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPreferences(JSON.parse(saved));
       } catch (e) {
         console.error("Failed to parse settings", e);

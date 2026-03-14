@@ -42,7 +42,15 @@ export default {
           700: '#ab634c',
           800: '#8f5240',
           900: '#754537', // Deep warm espresso text
-          950: '#42241b',
+          950: '#1e1520', // Deep plum page bg (dark mode)
+        },
+        darkSurface: {
+          DEFAULT: '#1e1520', // Deep plum page background
+          card: '#2a1f2d',    // Muted mauve card/panel bg
+          elevated: '#352838', // Warm grape hover/elevated bg
+          border: '#4a3545',  // Soft rose-tinted border
+          muted: '#c4a6b8',   // Soft mauve secondary text
+          input: '#231a26',   // Deep plum input bg
         }
       },
       fontFamily: {

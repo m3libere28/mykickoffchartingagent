@@ -13,7 +13,7 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
   }, [content]);
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-700/50 p-4 sm:p-6 relative group transition-all duration-300">
+    <div className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-darkSurface-border/50 p-4 sm:p-6 relative group transition-all duration-300">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-sm font-bold tracking-widest text-brand-800 dark:text-brand-400 font-heading uppercase flex items-center">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-400 dark:bg-brand-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
@@ -37,7 +37,7 @@ const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }
           value={content || ''}
           onChange={(e) => onTextChange(id, e.target.value)}
           placeholder={`No ${title.toLowerCase()} content extracted. Start typing to edit...`}
-          className="w-full bg-transparent text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:focus:ring-brand-500/10 rounded-xl p-3 sm:-mx-3 border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 transition-colors overflow-hidden"
+          className="w-full bg-transparent text-slate-700 dark:text-darkSurface-muted whitespace-pre-wrap leading-relaxed font-medium resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:focus:ring-brand-500/10 rounded-xl p-3 sm:-mx-3 border border-transparent hover:border-slate-100 dark:hover:border-darkSurface-border/50 transition-colors overflow-hidden"
           spellCheck="false"
         />
       </div>
@@ -82,10 +82,10 @@ ${data.monitoring_evaluation || ''}
     <div className="w-full mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Top Navigation / Actions */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-slate-200/60 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-slate-200/60 dark:border-darkSurface-border">
         <button 
           onClick={onReset}
-          className="flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-semibold transition-colors group mb-4 sm:mb-0 bg-white dark:bg-slate-800 px-4 py-3 sm:py-2 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md"
+          className="flex items-center justify-center text-slate-500 dark:text-darkSurface-muted hover:text-slate-800 dark:hover:text-slate-200 font-semibold transition-colors group mb-4 sm:mb-0 bg-white dark:bg-darkSurface-card px-4 py-3 sm:py-2 rounded-xl shadow-sm border border-slate-100 dark:border-darkSurface-border hover:shadow-md"
         >
           <ArrowLeft size={18} className="mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Upload
@@ -98,7 +98,7 @@ ${data.monitoring_evaluation || ''}
             className={`flex-1 sm:flex-none flex items-center justify-center px-6 py-2.5 font-bold rounded-xl transition-all duration-300 shadow-sm border ${
               copiedSection === 'all' 
                 ? 'bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 border-brand-200 dark:border-brand-800' 
-                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-brand-300 dark:hover:border-brand-600 hover:text-brand-700 dark:hover:text-brand-400 hover:shadow-md'
+                : 'bg-white dark:bg-darkSurface-card text-slate-700 dark:text-darkSurface-muted border-slate-200 dark:border-darkSurface-border hover:border-brand-300 dark:hover:border-brand-600 hover:text-brand-700 dark:hover:text-brand-400 hover:shadow-md'
             }`}
           >
             {copiedSection === 'all' ? (
@@ -158,7 +158,7 @@ ${data.monitoring_evaluation || ''}
           
           <div className="space-y-5">
               {data.missing_items && data.missing_items.length > 0 && (
-                 <div className="bg-white/60 dark:bg-slate-900/40 p-4 rounded-xl border border-indigo-100/50 dark:border-indigo-800/30">
+                 <div className="bg-white/60 dark:bg-darkSurface/40 p-4 rounded-xl border border-indigo-100/50 dark:border-indigo-800/30">
                    <strong className="text-indigo-900 dark:text-indigo-300 font-semibold text-sm mb-2 block flex items-center">
                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 dark:bg-indigo-500 mr-2"></span> Missing Information:
                    </strong>

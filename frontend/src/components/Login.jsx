@@ -26,28 +26,28 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-950 flex overflow-hidden relative">
+    <div className="min-h-screen bg-darkSurface flex overflow-hidden relative">
       <BackgroundPattern />
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand-500/20 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-accent-500/20 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="flex-1 hidden lg:flex flex-col justify-center items-center relative z-10 px-12">
         <div className="max-w-lg text-left">
-          <div className="inline-flex items-center justify-center p-1 bg-surface-900/50 rounded-full border border-white/10 mb-8 backdrop-blur-sm shadow-xl shadow-brand-500/10 hover:scale-105 transition-transform">
+          <div className="inline-flex items-center justify-center p-1 bg-darkSurface-card/50 rounded-full border border-white/10 mb-8 backdrop-blur-sm shadow-xl shadow-brand-500/10 hover:scale-105 transition-transform">
              <img src={emilyImg} alt="Dietitian Profile" className="w-12 h-12 object-cover rounded-full" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-heading font-extrabold text-white mb-6 leading-tight">
             Streamline your <br className="hidden sm:block"/><span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-brand-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">clinical drafting.</span>
           </h1>
-          <p className="text-slate-400 text-lg font-medium leading-relaxed mb-10 max-w-md">
+          <p className="text-darkSurface-muted text-lg font-medium leading-relaxed mb-10 max-w-md">
             Kickoff Charting V2 uses advanced AI to generate structured ADIME note drafts from your de-identified uploads, letting you spend more time with patients.
           </p>
-          <div className="flex items-center space-x-4 text-sm text-slate-400 font-medium">
-            <div className="flex items-center bg-surface-900/50 rounded-full px-4 py-2 border border-white/5">
+          <div className="flex items-center space-x-4 text-sm text-darkSurface-muted font-medium">
+            <div className="flex items-center bg-darkSurface-card/50 rounded-full px-4 py-2 border border-white/5">
               <ShieldCheck size={16} className="text-brand-400 mr-2" />
               Local Privacy Checks
             </div>
-            <div className="flex items-center bg-surface-900/50 rounded-full px-4 py-2 border border-white/5">
+            <div className="flex items-center bg-darkSurface-card/50 rounded-full px-4 py-2 border border-white/5">
               <Activity size={16} className="text-accent-400 mr-2" />
               Data Verified
             </div>
@@ -56,11 +56,11 @@ const Login = ({ onLoginSuccess }) => {
       </div>
 
       <div className="flex-1 flex justify-center items-center relative z-10 p-4">
-        <div className="w-full max-w-md bg-surface-900/40 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] border border-white/10 p-10 relative overflow-hidden">
+        <div className="w-full max-w-md bg-darkSurface-card/40 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] border border-white/10 p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-500/20 to-transparent blur-2xl rounded-bl-full pointer-events-none"></div>
           
           <div className="lg:hidden flex justify-center mb-8">
-            <div className="p-1 bg-surface-900/50 rounded-full border border-white/10 shadow-xl">
+            <div className="p-1 bg-darkSurface-card/50 rounded-full border border-white/10 shadow-xl">
                <img src={emilyImg} alt="Dietitian Profile" className="w-12 h-12 object-cover rounded-full" />
             </div>
           </div>
@@ -68,7 +68,7 @@ const Login = ({ onLoginSuccess }) => {
           <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white text-center mb-2">
             Welcome Back
           </h2>
-          <p className="text-slate-400 text-sm text-center mb-10 font-medium">
+          <p className="text-darkSurface-muted text-sm text-center mb-10 font-medium">
             Authorized personnel login required
           </p>
 
@@ -81,27 +81,27 @@ const Login = ({ onLoginSuccess }) => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-1.5">
-              <label className="block text-sm font-semibold text-slate-300 ml-1">
+              <label className="block text-sm font-semibold text-darkSurface-muted ml-1">
                 Username
               </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-5 py-3.5 bg-surface-950/80 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all font-medium"
+                className="w-full px-5 py-3.5 bg-darkSurface-input/80 border border-darkSurface-border/50 rounded-xl text-white placeholder-darkSurface-muted/50 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all font-medium"
                 placeholder="Enter your username"
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <label className="block text-sm font-semibold text-slate-300 ml-1">
+              <label className="block text-sm font-semibold text-darkSurface-muted ml-1">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-5 py-3.5 bg-surface-950/80 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all font-medium"
+                className="w-full px-5 py-3.5 bg-darkSurface-input/80 border border-darkSurface-border/50 rounded-xl text-white placeholder-darkSurface-muted/50 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all font-medium"
                 placeholder="••••••••"
                 required
               />

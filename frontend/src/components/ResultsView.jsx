@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown, BookmarkPlus } from 'lucide-react';
+import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown, BookmarkPlus, Printer, FileText, Loader2, X } from 'lucide-react';
+import { generatePatientSummary } from '../services/api';
 
 const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection, smartPhrases, onInsertSmartPhrase }) => {
   const textareaRef = useRef(null);
@@ -97,6 +98,9 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
   const [copiedSection, setCopiedSection] = useState(null);
   const [showCopyMenu, setShowCopyMenu] = useState(false);
   const [smartPhrases, setSmartPhrases] = useState([]);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [summaryText, setSummaryText] = useState(null);
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
   const copyMenuRef = useRef(null);
 
   useEffect(() => {
@@ -141,6 +145,56 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
     navigator.clipboard.writeText(text);
     setCopiedSection(sectionName);
     setTimeout(() => setCopiedSection(null), 3000);
+  };
+
+  const handleGenerateSummary = async () => {
+    setIsGeneratingSummary(true);
+    setSummaryText(null);
+    setShowSummaryModal(true);
+    try {
+      const result = await generatePatientSummary(data);
+      setSummaryText(result.summary);
+    } catch (error) {
+      console.error("Failed to generate summary", error);
+      setSummaryText("Failed to generate the patient summary. Please try again.");
+    } finally {
+      setIsGeneratingSummary(false);
+    }
+  };
+
+  const handlePrint = () => {
+    // A simple approach is to open a new window, write the summary, and call print()
+    if (!summaryText) return;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Patient Summary</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1e293b; max-width: 800px; margin: 0 auto; padding: 40px; }
+            h1 { color: #0f172a; margin-bottom: 24px; }
+            h2, h3 { color: #334155; margin-top: 24px; margin-bottom: 12px; }
+            ul { margin-bottom: 16px; padding-left: 24px; }
+            li { margin-bottom: 8px; }
+            p { margin-bottom: 16px; }
+            strong { font-weight: 600; color: #0f172a; }
+            @media print {
+              body { padding: 0; }
+              @page { margin: 2cm; }
+            }
+          </style>
+        </head>
+        <body>
+          \${summaryText.replace(/\\n/g, '<br/>')}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    // Wait for styles/content to load before printing
+    setTimeout(() => {
+      printWindow.print();
+      // Optional: printWindow.close();
+    }, 250);
   };
 
   const handleCopyFormatted = (format) => {
@@ -363,6 +417,106 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
             </div>
           )}
         </div>
+      )}
+
+      {/* Action Footer */}
+      <div className="mt-10 pt-8 border-t border-slate-200/60 dark:border-darkSurface-border flex justify-end">
+        <button
+          onClick={handleGenerateSummary}
+          disabled={isGeneratingSummary}
+          className="flex items-center justify-center px-6 py-3.5 bg-brand-50 hover:bg-brand-100 dark:bg-brand-900/20 dark:hover:bg-brand-900/40 text-brand-700 dark:text-brand-400 font-bold rounded-xl transition-all duration-300 border border-brand-200 dark:border-brand-800 shadow-sm hover:shadow-md"
+        >
+          {isGeneratingSummary ? (
+            <><Loader2 size={18} className="mr-2 animate-spin" /> Generating...</>
+          ) : (
+            <><FileText size={18} className="mr-2" /> Generate Patient Handout</>
+          )}
+        </button>
+      </div>
+
+      {/* Patient Summary Modal */}
+      {showSummaryModal && (
+        <>
+          <div 
+            className="fixed inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm z-[100] transition-opacity duration-300 flex justify-center items-center p-4 sm:p-6"
+            onClick={() => !isGeneratingSummary && setShowSummaryModal(false)}
+          >
+            <div 
+              className="bg-white dark:bg-darkSurface w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-100 dark:border-darkSurface-border/50 flex flex-col max-h-[90vh] overflow-hidden transform transition-all animate-in zoom-in-95 duration-200"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-slate-100 dark:border-darkSurface-border/50 flex justify-between items-center bg-slate-50/50 dark:bg-darkSurface/50">
+                <div className="flex items-center">
+                  <div className="p-2 bg-brand-100 dark:bg-brand-900/30 rounded-xl mr-3">
+                    <FileText className="text-brand-600 dark:text-brand-400" size={20} />
+                  </div>
+                  <h2 className="text-lg font-bold font-heading text-slate-800 dark:text-white tracking-tight">Patient Handout</h2>
+                </div>
+                {!isGeneratingSummary && (
+                  <button 
+                    onClick={() => setShowSummaryModal(false)}
+                    className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-darkSurface-card rounded-xl transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-slate-50/30 dark:bg-darkSurface-card/30">
+                {isGeneratingSummary ? (
+                  <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
+                     <div className="relative mb-6">
+                        <div className="absolute inset-0 bg-brand-500/20 dark:bg-brand-400/20 rounded-full blur-xl animate-pulse"></div>
+                        <div className="bg-white dark:bg-darkSurface-elevated p-4 rounded-2xl shadow-lg relative border border-slate-100 dark:border-darkSurface-border">
+                          <Loader2 size={32} className="text-brand-500 animate-spin" />
+                        </div>
+                     </div>
+                     <h3 className="text-lg font-bold font-heading text-slate-800 dark:text-white mb-2">Translating Clinical Notes...</h3>
+                     <p className="text-slate-500 dark:text-darkSurface-muted text-sm max-w-sm mx-auto">
+                        Writing an encouraging, jargon-free summary focusing on goals and the care plan at a 6th-grade reading level.
+                     </p>
+                  </div>
+                ) : (
+                  <div className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
+                    {/* Render Basic Markdown to HTML (Handling line breaks, bold, and bullets simply for the modal visual) */}
+                    <div 
+                      className="whitespace-pre-wrap leading-relaxed space-y-4"
+                      dangerouslySetInnerHTML={{
+                        __html: summaryText
+                          ?.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>')
+                          ?.replace(/^-\\s(.*)/gm, '<li>$1</li>')
+                          ?.replace(/(<li>.*<\/li>)/s, '<ul class="pl-5 my-2 list-disc">$1</ul>') 
+                        || ''
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              {!isGeneratingSummary && summaryText && (
+                <div className="p-5 border-t border-slate-100 dark:border-darkSurface-border/50 bg-white dark:bg-darkSurface flex justify-end gap-3">
+                   <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(summaryText);
+                    }}
+                    className="px-5 py-2.5 rounded-xl font-bold flex items-center justify-center transition-all duration-200 bg-slate-100 dark:bg-darkSurface-elevated hover:bg-slate-200 dark:hover:bg-darkSurface-card text-slate-700 dark:text-slate-200"
+                  >
+                    <Copy size={18} className="mr-2" /> Copy text
+                  </button>
+                  <button
+                    onClick={handlePrint}
+                    className="px-6 py-2.5 rounded-xl font-bold flex items-center justify-center shadow-lg hover:-translate-y-0.5 bg-brand-500 hover:bg-brand-400 text-white shadow-brand-500/30 transition-all duration-300"
+                  >
+                    <Printer size={18} className="mr-2" /> Print PDF
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
       )}
 
     </div>

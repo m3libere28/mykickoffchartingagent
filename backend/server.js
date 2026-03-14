@@ -37,10 +37,12 @@ app.get('/api/health', (req, res) => {
 const authRoutes = require('./routes/auth');
 const extractRoutes = require('./routes/extract');
 const followUpRoutes = require('./routes/followUp');
+const summaryRoutes = require('./routes/summary');
 
 app.use('/api', authRoutes);
 app.use('/api/extract-adime', extractRoutes);
 app.use('/api/extract-followup', followUpRoutes);
+app.use('/api/generate-summary', summaryRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

@@ -77,4 +77,9 @@ export const uploadFollowUpFiles = async (previousFiles, newFiles, preferences =
   return response.data;
 };
 
+export const generatePatientSummary = async (adimeData) => {
+  const response = await api.post('/generate-summary', { adimeData });
+  return response.data;
+};
+
 export default api;

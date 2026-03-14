@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse } from 'lucide-react';
+import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ClipboardPaste } from 'lucide-react';
 import { uploadFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
 import emilyImg from '../assets/emily.jpg';
@@ -12,6 +12,8 @@ const Dashboard = ({ onUploadSuccess }) => {
   const [progressMsg, setProgressMsg] = useState('');
   const [isPhiConfirmed, setIsPhiConfirmed] = useState(false);
   const [imagePreviews, setImagePreviews] = useState({});
+  const [inputMode, setInputMode] = useState('upload'); // 'upload' or 'paste'
+  const [pastedText, setPastedText] = useState('');
   
   const fileInputRef = useRef(null);
 
@@ -99,8 +101,10 @@ const Dashboard = ({ onUploadSuccess }) => {
     setFiles(files.filter((_, index) => index !== indexToRemove));
   };
 
+  const hasContent = inputMode === 'upload' ? files.length > 0 : pastedText.trim().length > 0;
+
   const handleProcess = async () => {
-    if (files.length === 0 || !isPhiConfirmed) return;
+    if (!hasContent || !isPhiConfirmed) return;
     setIsUploading(true);
     setError('');
     setProgressMsg('Extracting content and checking for identifiers...');
@@ -109,7 +113,13 @@ const Dashboard = ({ onUploadSuccess }) => {
       setTimeout(() => setProgressMsg('Generating Draft ADIME...'), 2000);
       setTimeout(() => setProgressMsg('Validating clinical completeness...'), 5000);
 
-      const response = await uploadFiles(files);
+      let filesToUpload = files;
+      if (inputMode === 'paste') {
+        const blob = new Blob([pastedText], { type: 'text/plain' });
+        filesToUpload = [new File([blob], 'pasted-notes.txt', { type: 'text/plain' })];
+      }
+
+      const response = await uploadFiles(filesToUpload);
       if (response && (response.assessment || response.diagnosis || response.intervention || response.monitoring_evaluation)) {
         onUploadSuccess(response);
       } else {
@@ -146,7 +156,36 @@ const Dashboard = ({ onUploadSuccess }) => {
         </div>
       </div>
 
-      {/* Upload Zone */}
+      {/* Input Mode Toggle */}
+      <div className="flex items-center justify-center sm:justify-start mb-6">
+        <div className="bg-white dark:bg-darkSurface-card rounded-xl p-1 shadow-sm border border-slate-200/60 dark:border-darkSurface-border/60 flex">
+          <button
+            onClick={() => setInputMode('upload')}
+            className={`flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+              inputMode === 'upload'
+                ? 'bg-slate-800 dark:bg-darkSurface-elevated text-white shadow-sm'
+                : 'text-slate-500 dark:text-darkSurface-muted hover:text-slate-800 dark:hover:text-white'
+            }`}
+          >
+            <Upload size={15} className="mr-1.5" />
+            Upload Files
+          </button>
+          <button
+            onClick={() => setInputMode('paste')}
+            className={`flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+              inputMode === 'paste'
+                ? 'bg-slate-800 dark:bg-darkSurface-elevated text-white shadow-sm'
+                : 'text-slate-500 dark:text-darkSurface-muted hover:text-slate-800 dark:hover:text-white'
+            }`}
+          >
+            <ClipboardPaste size={15} className="mr-1.5" />
+            Paste Text
+          </button>
+        </div>
+      </div>
+
+      {inputMode === 'upload' ? (
+      /* Upload Zone */
       <div 
         className={`relative border-2 border-dashed rounded-[2rem] p-6 flex flex-col items-center justify-center sm:p-12 text-center transition-all duration-300 ease-in-out bg-surface-50/80 dark:bg-darkSurface-card/50 backdrop-blur-sm ${
           isDragging 
@@ -181,6 +220,24 @@ const Dashboard = ({ onUploadSuccess }) => {
           Browse Files
         </button>
       </div>
+      ) : (
+      /* Paste Text Zone */
+      <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border shadow-sm transition-all duration-300">
+        <div className="px-5 py-3 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex items-center">
+          <ClipboardPaste size={16} className="text-slate-400 dark:text-darkSurface-muted mr-2" />
+          <span className="text-sm font-semibold text-slate-600 dark:text-darkSurface-muted">Paste or type your clinical notes below</span>
+          {pastedText.length > 0 && (
+            <span className="ml-auto text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50">{pastedText.length} characters</span>
+          )}
+        </div>
+        <textarea
+          value={pastedText}
+          onChange={(e) => setPastedText(e.target.value)}
+          placeholder="Paste your de-identified clinical notes here...\n\nExample:\nChief Complaint: Pt c/o difficulty managing blood sugar...\nPMH: T2DM, HTN, HLD...\nNutrition Assessment: ...\nCounseling Provided: ...\nPlan: ..."
+          className="w-full min-h-[280px] sm:min-h-[320px] p-5 text-sm text-slate-800 dark:text-slate-200 bg-transparent placeholder-slate-300 dark:placeholder-darkSurface-muted/40 focus:outline-none resize-y font-mono leading-relaxed"
+        />
+      </div>
+      )}
 
       {/* Error Message */}
       {error && (
@@ -191,7 +248,7 @@ const Dashboard = ({ onUploadSuccess }) => {
       )}
 
       {/* Selected Files List */}
-      {files.length > 0 && (
+      {hasContent && (
         <div className="mt-10 bg-white dark:bg-darkSurface-card rounded-[2rem] shadow-xl shadow-slate-200/30 dark:shadow-none border border-slate-100 dark:border-darkSurface-border overflow-hidden transition-all duration-500 animate-in slide-in-from-bottom-8">
           <div className="px-6 py-5 border-b border-slate-100 dark:border-darkSurface-border bg-slate-50/50 dark:bg-darkSurface/50 flex justify-between items-center">
              <h4 className="font-bold font-heading text-slate-800 dark:text-slate-200 text-base sm:text-lg flex items-center">
@@ -264,7 +321,7 @@ const Dashboard = ({ onUploadSuccess }) => {
              ) : (
                 <button
                     onClick={handleProcess}
-                    disabled={!isPhiConfirmed}
+                    disabled={!isPhiConfirmed || !hasContent}
                     className={`w-full sm:w-auto px-6 sm:px-12 py-3.5 sm:py-4 font-bold font-heading tracking-wide rounded-xl shadow-[0_8px_20px_rgba(236,72,153,0.25)] transition-all duration-300 ${
                       isPhiConfirmed 
                         ? 'bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-400 hover:to-accent-400 text-white hover:shadow-[0_8px_25px_rgba(236,72,153,0.35)] hover:-translate-y-0.5 active:scale-[0.98]'

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2 } from 'lucide-react';
+import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse, ArrowRight, History, FilePlus2, ClipboardPaste } from 'lucide-react';
 import { uploadFollowUpFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
 import emilyImg from '../assets/emily.jpg';
@@ -18,6 +18,10 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
   
   const previousInputRef = useRef(null);
   const newInputRef = useRef(null);
+  const [previousInputMode, setPreviousInputMode] = useState('upload');
+  const [newInputMode, setNewInputMode] = useState('upload');
+  const [previousPastedText, setPreviousPastedText] = useState('');
+  const [newPastedText, setNewPastedText] = useState('');
 
   // Generate previews for previous files
   useEffect(() => {
@@ -84,8 +88,10 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
     }
   });
 
+  const hasNewContent = newInputMode === 'upload' ? newFiles.length > 0 : newPastedText.trim().length > 0;
+
   const handleProcess = async () => {
-    if (newFiles.length === 0 || !isPhiConfirmed) return;
+    if (!hasNewContent || !isPhiConfirmed) return;
     setIsUploading(true);
     setError('');
     setProgressMsg('Extracting content from all notes...');
@@ -96,7 +102,21 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
       setTimeout(() => setProgressMsg('Generating Follow-Up ADIME Draft...'), 6000);
       setTimeout(() => setProgressMsg('Building treatment recommendations...'), 9000);
 
-      const response = await uploadFollowUpFiles(previousFiles, newFiles);
+      // Build previous files (may include pasted text as blob)
+      let prevFilesToSend = previousFiles;
+      if (previousInputMode === 'paste' && previousPastedText.trim()) {
+        const blob = new Blob([previousPastedText], { type: 'text/plain' });
+        prevFilesToSend = [new File([blob], 'previous-notes-pasted.txt', { type: 'text/plain' })];
+      }
+
+      // Build new files (may include pasted text as blob)
+      let newFilesToSend = newFiles;
+      if (newInputMode === 'paste') {
+        const blob = new Blob([newPastedText], { type: 'text/plain' });
+        newFilesToSend = [new File([blob], 'followup-notes-pasted.txt', { type: 'text/plain' })];
+      }
+
+      const response = await uploadFollowUpFiles(prevFilesToSend, newFilesToSend);
       if (response && (response.assessment || response.diagnosis || response.intervention || response.monitoring_evaluation)) {
         onUploadSuccess(response);
       } else {
@@ -170,11 +190,31 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
             </div>
             <div>
               <h3 className="text-lg font-bold font-heading text-slate-800 dark:text-white">Previous Notes</h3>
-              <p className="text-xs text-slate-400 dark:text-darkSurface-muted/60 font-medium">Upload notes from prior visits for treatment continuity</p>
+              <p className="text-xs text-slate-400 dark:text-darkSurface-muted/60 font-medium">Upload or paste notes from prior visits for treatment continuity</p>
             </div>
             <span className="ml-auto text-xs font-semibold text-slate-400 dark:text-darkSurface-muted/50 bg-slate-100 dark:bg-darkSurface-elevated px-2.5 py-1 rounded-full uppercase tracking-wider">Optional</span>
           </div>
 
+          {/* Previous Notes Input Mode Toggle */}
+          <div className="flex items-center mb-3">
+            <div className="bg-white dark:bg-darkSurface-card rounded-lg p-0.5 shadow-sm border border-slate-200/60 dark:border-darkSurface-border/60 flex">
+              <button
+                onClick={() => setPreviousInputMode('upload')}
+                className={`flex items-center px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${previousInputMode === 'upload' ? 'bg-slate-700 dark:bg-darkSurface-elevated text-white shadow-sm' : 'text-slate-400 dark:text-darkSurface-muted hover:text-slate-700 dark:hover:text-white'}`}
+              >
+                <Upload size={13} className="mr-1" /> Upload
+              </button>
+              <button
+                onClick={() => setPreviousInputMode('paste')}
+                className={`flex items-center px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${previousInputMode === 'paste' ? 'bg-slate-700 dark:bg-darkSurface-elevated text-white shadow-sm' : 'text-slate-400 dark:text-darkSurface-muted hover:text-slate-700 dark:hover:text-white'}`}
+              >
+                <ClipboardPaste size={13} className="mr-1" /> Paste
+              </button>
+            </div>
+          </div>
+
+          {previousInputMode === 'upload' ? (
+          <>
           <div 
             className={`relative border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center transition-all duration-300 ease-in-out bg-surface-50/80 dark:bg-darkSurface-card/50 backdrop-blur-sm ${
               isDraggingPrevious 
@@ -210,6 +250,25 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
               {renderFileList(previousFiles, previousPreviews, (i) => setPreviousFiles(f => f.filter((_, idx) => idx !== i)))}
             </div>
           )}
+          </>
+          ) : (
+          /* Previous Notes Paste Zone */
+          <div className="relative rounded-xl overflow-hidden bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border shadow-sm">
+            <div className="px-4 py-2.5 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex items-center">
+              <ClipboardPaste size={14} className="text-slate-400 dark:text-darkSurface-muted mr-2" />
+              <span className="text-xs font-semibold text-slate-500 dark:text-darkSurface-muted">Paste previous visit notes</span>
+              {previousPastedText.length > 0 && (
+                <span className="ml-auto text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50">{previousPastedText.length} chars</span>
+              )}
+            </div>
+            <textarea
+              value={previousPastedText}
+              onChange={(e) => setPreviousPastedText(e.target.value)}
+              placeholder="Paste your previous visit notes here..."
+              className="w-full min-h-[180px] p-4 text-sm text-slate-800 dark:text-slate-200 bg-transparent placeholder-slate-300 dark:placeholder-darkSurface-muted/40 focus:outline-none resize-y font-mono leading-relaxed"
+            />
+          </div>
+          )}
         </div>
 
         {/* Arrow Connector */}
@@ -229,11 +288,31 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
             </div>
             <div>
               <h3 className="text-lg font-bold font-heading text-slate-800 dark:text-white">New Follow-Up Notes</h3>
-              <p className="text-xs text-slate-400 dark:text-darkSurface-muted/60 font-medium">Upload notes from the current follow-up visit</p>
+              <p className="text-xs text-slate-400 dark:text-darkSurface-muted/60 font-medium">Upload or paste notes from the current follow-up visit</p>
             </div>
             <span className="ml-auto text-xs font-semibold text-brand-500 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 px-2.5 py-1 rounded-full uppercase tracking-wider">Required</span>
           </div>
 
+          {/* New Notes Input Mode Toggle */}
+          <div className="flex items-center mb-3">
+            <div className="bg-white dark:bg-darkSurface-card rounded-lg p-0.5 shadow-sm border border-slate-200/60 dark:border-darkSurface-border/60 flex">
+              <button
+                onClick={() => setNewInputMode('upload')}
+                className={`flex items-center px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${newInputMode === 'upload' ? 'bg-slate-700 dark:bg-darkSurface-elevated text-white shadow-sm' : 'text-slate-400 dark:text-darkSurface-muted hover:text-slate-700 dark:hover:text-white'}`}
+              >
+                <Upload size={13} className="mr-1" /> Upload
+              </button>
+              <button
+                onClick={() => setNewInputMode('paste')}
+                className={`flex items-center px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${newInputMode === 'paste' ? 'bg-slate-700 dark:bg-darkSurface-elevated text-white shadow-sm' : 'text-slate-400 dark:text-darkSurface-muted hover:text-slate-700 dark:hover:text-white'}`}
+              >
+                <ClipboardPaste size={13} className="mr-1" /> Paste
+              </button>
+            </div>
+          </div>
+
+          {newInputMode === 'upload' ? (
+          <>
           <div 
             className={`relative border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center transition-all duration-300 ease-in-out bg-surface-50/80 dark:bg-darkSurface-card/50 backdrop-blur-sm ${
               isDraggingNew 
@@ -274,6 +353,25 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
               {renderFileList(newFiles, newPreviews, (i) => setNewFiles(f => f.filter((_, idx) => idx !== i)))}
             </div>
           )}
+          </>
+          ) : (
+          /* New Notes Paste Zone */
+          <div className="relative rounded-xl overflow-hidden bg-white dark:bg-darkSurface-card border border-slate-200 dark:border-darkSurface-border shadow-sm">
+            <div className="px-4 py-2.5 border-b border-slate-100 dark:border-darkSurface-border/50 bg-slate-50/50 dark:bg-darkSurface/50 flex items-center">
+              <ClipboardPaste size={14} className="text-brand-500 dark:text-brand-400 mr-2" />
+              <span className="text-xs font-semibold text-slate-500 dark:text-darkSurface-muted">Paste new follow-up notes</span>
+              {newPastedText.length > 0 && (
+                <span className="ml-auto text-xs font-medium text-slate-400 dark:text-darkSurface-muted/50">{newPastedText.length} chars</span>
+              )}
+            </div>
+            <textarea
+              value={newPastedText}
+              onChange={(e) => setNewPastedText(e.target.value)}
+              placeholder="Paste your new follow-up visit notes here...\n\nExample:\nChief Complaint: Pt returns for f/u...\nWeight History: ...\nNutrition Assessment: ...\nCounseling Provided: ...\nPlan: ..."
+              className="w-full min-h-[220px] p-4 text-sm text-slate-800 dark:text-slate-200 bg-transparent placeholder-slate-300 dark:placeholder-darkSurface-muted/40 focus:outline-none resize-y font-mono leading-relaxed"
+            />
+          </div>
+          )}
         </div>
       </div>
 
@@ -286,7 +384,7 @@ const FollowUpDashboard = ({ onUploadSuccess }) => {
       )}
 
       {/* Action Area */}
-      {(newFiles.length > 0) && (
+      {hasNewContent && (
         <div className="mt-10 bg-white dark:bg-darkSurface-card rounded-2xl border border-slate-100 dark:border-darkSurface-border p-5 sm:p-8 flex flex-col items-center shadow-sm animate-in slide-in-from-bottom-4">
           
           {/* Summary */}

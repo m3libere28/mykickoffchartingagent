@@ -48,6 +48,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         heading: ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        lux: ['"Playfair Display"', 'Georgia', 'serif'],
       }
     },
   },

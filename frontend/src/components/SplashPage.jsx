@@ -1,37 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import emilyImg from '../assets/emily.jpg';
 import BackgroundPattern from './BackgroundPattern';
 
 const SplashPage = ({ onComplete }) => {
-  const [showSignature, setShowSignature] = useState(false);
-  const [showSubtitle, setShowSubtitle] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-
   useEffect(() => {
-    // 1. Show image immediately (via CSS animation)
-    // 2. Start signature reveal after 1.2s
-    const sigTimer = setTimeout(() => {
-      setShowSignature(true);
-    }, 1200);
-
-    // 3. Fade in credentials right after signature finishes drawing (approx 3.5s after sig starts)
-    const subTimer = setTimeout(() => {
-      setShowSubtitle(true);
-    }, 4200);
-
-    // 4. Fade everything out
+    // 1. Fade everything out
     const fadeOutTimer = setTimeout(() => {
       setIsFadingOut(true);
-    }, 6500);
+    }, 5500);
 
-    // 5. Complete splash screen sequence (trigger unmount in App.jsx)
+    // 2. Complete splash screen sequence (trigger unmount in App.jsx)
     const completeTimer = setTimeout(() => {
       if (onComplete) onComplete();
-    }, 7500);
+    }, 6500);
 
     return () => {
-      clearTimeout(sigTimer);
-      clearTimeout(subTimer);
       clearTimeout(fadeOutTimer);
       clearTimeout(completeTimer);
     };
@@ -66,37 +50,38 @@ const SplashPage = ({ onComplete }) => {
           </div>
         </div>
         
-        {/* Signature Area */}
+        {/* Luxurious Typography Title Area with Framer Motion */}
         <div className="mt-8 relative w-full flex flex-col items-center h-40">
            
-           {/* Main Title instead of Signature */}
-           <div className="relative overflow-hidden pt-4 pb-2 px-2 mt-4">
-             <h1 
-               className="text-brand-600 text-4xl sm:text-5xl md:text-6xl text-center whitespace-normal sm:whitespace-nowrap leading-tight will-change-transform font-medium tracking-wide font-heading"
-               style={{ 
-                  clipPath: showSignature ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(0 0, 0 0, 0 100%, 0 100%)',
-                  transition: 'clip-path 2s cubic-bezier(0.4, 0, 0.2, 1)',
-                  WebkitClipPath: showSignature ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(0 0, 0 0, 0 100%, 0 100%)'
-               }}
+           <div className="relative overflow-hidden pt-4 pb-2 px-2 mt-4 flex flex-col items-center text-center">
+             <motion.h1 
+               className="text-brand-800 dark:text-brand-300 text-5xl sm:text-6xl md:text-7xl text-center whitespace-normal sm:whitespace-nowrap leading-tight font-lux tracking-wide font-medium"
+               initial={{ opacity: 0, y: 30 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
              >
                Kickoff Chart Converter
-             </h1>
+             </motion.h1>
            </div>
 
            {/* AI Subtitle */}
-           <p 
-             className={`text-accent-600 font-medium tracking-[0.2em] text-sm uppercase mt-2 transform transition-all duration-700 ${
-               showSubtitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
-             }`}
+           <motion.p 
+             className="text-accent-600 font-medium tracking-[0.2em] text-sm uppercase mt-4"
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1.2, ease: "easeOut", delay: 1.5 }}
            >
              AI CLINICAL ASSISTANT
-           </p>
+           </motion.p>
 
-           <p className={`text-surface-400 font-medium tracking-widest text-xs uppercase mt-8 transform transition-all duration-1000 ${
-               showSubtitle ? 'opacity-100' : 'opacity-0'
-             }`}>
+           <motion.p 
+             className="text-surface-500 font-medium tracking-[0.3em] text-xs uppercase mt-8"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ duration: 2, ease: "easeInOut", delay: 2.2 }}
+           >
              Powered by OpenAI
-           </p>
+           </motion.p>
         </div>
 
       </div>

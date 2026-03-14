@@ -173,7 +173,7 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
     setShowSummaryModal(true);
     try {
       const result = await generatePatientSummary(data);
-      setSummaryText(result.summary);
+      setSummaryText(result);
     } catch (error) {
       console.error("Failed to generate summary", error);
       setSummaryText("Failed to generate the patient summary. Please try again.");

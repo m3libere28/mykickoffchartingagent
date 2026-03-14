@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import emilyImg from '../assets/emily.jpg';
+import emilyAnimated from '../assets/emily-animated.gif';
 import BackgroundPattern from './BackgroundPattern';
 
 const SplashPage = ({ onComplete }) => {
@@ -42,8 +42,8 @@ const SplashPage = ({ onComplete }) => {
           <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full p-1.5 bg-gradient-to-tr from-accent-200 via-surface-100 to-brand-200 shadow-2xl shadow-accent-200/40 hover:scale-[1.02] transition-transform duration-700">
             <div className="w-full h-full rounded-full overflow-hidden border-4 border-white bg-white flex items-center justify-center">
                <img 
-                 src={emilyImg} 
-                 alt="Dietitian Profile" 
+                 src={emilyAnimated} 
+                 alt="Animated Dietitian Profile" 
                  className="w-full h-full object-cover origin-center hover:scale-105 transition-transform duration-700 opacity-90"
                />
             </div>

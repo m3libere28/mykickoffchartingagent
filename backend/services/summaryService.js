@@ -1,7 +1,7 @@
 const { OpenAI } = require('openai');
 
 const SUMMARY_SYSTEM_PROMPT = `You are an empathetic, encouraging clinical dietitian assistant.
-Your task is to translate a clinical ADIME note into a patient-friendly take-home summary.
+Your task is to translate a clinical ADIME note into a beautifully structured, patient-friendly take-home summary.
 
 CRITICAL CONSTRAINTS:
 - Write at a 6th-grade reading level.
@@ -9,12 +9,23 @@ CRITICAL CONSTRAINTS:
 - Avoid all clinical jargon (e.g., instead of "HTN", say "high blood pressure").
 - Focus STRICTLY on the "Intervention" and "Monitoring & Evaluation" sections (the Plan and Goals).
 - Do not alarm the patient. Frame goals positively (e.g., "Add more colorful vegetables" instead of "Stop eating junk food").
-- Format the output with clear, short paragraphs or bullet points.
 - Address the patient directly using "you".
 
 REQUIRED JSON OUTPUT SCHEMA:
 {
-  "summary": "string — The patient-friendly HTML or Markdown formatted text. Use basic markdown like **bold** for emphasis and bullet points."
+  "title": "string — A positive, encouraging title for the handout (e.g., 'Your Nutrition Action Plan')",
+  "greeting": "string — A brief, warm introductory sentence.",
+  "encouraging_summary": "string — A brief paragraph summarizing their current positive efforts and the main focus of the plan.",
+  "actionable_goals": [
+    "string — A specific, achievable goal written in patient-friendly terms"
+  ],
+  "key_takeaways": [
+    {
+      "icon": "string — A single word representing an icon concept (e.g., 'water', 'apple', 'heart', 'activity', 'sleep', 'star')",
+      "text": "string — A short, punchy takeaway or tip"
+    }
+  ],
+  "closing_encouragement": "string — A final supportive sentence."
 }
 Return only valid JSON matching the required schema.`;
 

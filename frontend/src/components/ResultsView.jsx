@@ -1,6 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown, BookmarkPlus, Printer, FileText, Loader2, X } from 'lucide-react';
+import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb, ChevronDown, BookmarkPlus, Printer, FileText, Loader2, X, Heart, Droplets, Apple, Activity, Moon, Star, Flame, Coffee, Smile } from 'lucide-react';
 import { generatePatientSummary } from '../services/api';
+
+const getIconForTakeaway = (iconName) => {
+  const icons = {
+    heart: <Heart size={20} className="text-rose-500" />,
+    water: <Droplets size={20} className="text-blue-500" />,
+    droplets: <Droplets size={20} className="text-blue-500" />,
+    apple: <Apple size={20} className="text-red-500" />,
+    food: <Apple size={20} className="text-red-500" />,
+    activity: <Activity size={20} className="text-brand-500" />,
+    exercise: <Activity size={20} className="text-brand-500" />,
+    sleep: <Moon size={20} className="text-indigo-500" />,
+    moon: <Moon size={20} className="text-indigo-500" />,
+    star: <Star size={20} className="text-amber-500" />,
+    energy: <Flame size={20} className="text-orange-500" />,
+    flame: <Flame size={20} className="text-orange-500" />,
+    coffee: <Coffee size={20} className="text-amber-700" />,
+    smile: <Smile size={20} className="text-emerald-500" />
+  };
+  return icons[iconName?.toLowerCase()] || <Star size={20} className="text-brand-500" />;
+};
 
 const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection, smartPhrases, onInsertSmartPhrase }) => {
   const textareaRef = useRef(null);
@@ -171,21 +191,138 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
         <head>
           <title>Patient Summary</title>
           <style>
-            body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1e293b; max-width: 800px; margin: 0 auto; padding: 40px; }
-            h1 { color: #0f172a; margin-bottom: 24px; }
-            h2, h3 { color: #334155; margin-top: 24px; margin-bottom: 12px; }
-            ul { margin-bottom: 16px; padding-left: 24px; }
-            li { margin-bottom: 8px; }
-            p { margin-bottom: 16px; }
-            strong { font-weight: 600; color: #0f172a; }
-            @media print {
-              body { padding: 0; }
-              @page { margin: 2cm; }
+            @page { margin: 0; size: letter; }
+            body { 
+              font-family: 'Inter', -apple-system, sans-serif; 
+              color: #1e293b; 
+              margin: 0;
+              padding: 0;
+              background: white;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            .print-container {
+              padding: 50px 60px;
+              max-width: 100%;
+            }
+            .header-banner {
+              background: #f0fdf4;
+              border-bottom: 4px solid #10b981;
+              padding: 40px 60px;
+              margin-bottom: 40px;
+            }
+            h1 { color: #065f46; margin: 0 0 10px 0; font-size: 32px; font-weight: 800; }
+            .greeting { color: #047857; font-size: 18px; font-weight: 500; margin: 0; }
+            
+            .summary-box {
+              background: #f8fafc;
+              border-left: 4px solid #3b82f6;
+              padding: 24px;
+              border-radius: 0 12px 12px 0;
+              margin-bottom: 40px;
+            }
+            .summary-box p { margin: 0; font-size: 16px; line-height: 1.6; color: #334155; }
+            
+            .section-title {
+              color: #0f172a;
+              font-size: 20px;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              border-bottom: 2px solid #e2e8f0;
+              padding-bottom: 12px;
+              margin-bottom: 24px;
+              margin-top: 40px;
+            }
+            
+            .goals-list { padding-left: 0; list-style: none; margin: 0 0 40px 0; }
+            .goals-list li {
+              position: relative;
+              padding-left: 32px;
+              margin-bottom: 16px;
+              font-size: 16px;
+              line-height: 1.5;
+              color: #1e293b;
+            }
+            .goals-list li::before {
+              content: '✓';
+              position: absolute;
+              left: 0;
+              top: 0;
+              color: #10b981;
+              font-weight: bold;
+              font-size: 18px;
+            }
+            
+            .takeaways-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 20px;
+              margin-bottom: 40px;
+            }
+            .takeaway-card {
+              background: #ffffff;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+              padding: 20px;
+              display: flex;
+              align-items: flex-start;
+              gap: 16px;
+            }
+            .takeaway-icon-placeholder {
+              width: 32px;
+              height: 32px;
+              background: #f1f5f9;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 16px;
+              flex-shrink: 0;
+            }
+            .takeaway-text { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 500; color: #334155; padding-top: 5px; }
+            
+            .footer {
+              text-align: center;
+              margin-top: 60px;
+              padding-top: 30px;
+              border-top: 1px dashed #cbd5e1;
+              color: #64748b;
+              font-size: 16px;
+              font-style: italic;
             }
           </style>
         </head>
         <body>
-          ${summaryText.replace(/\n/g, '<br/>')}
+          <div class="header-banner">
+            <h1>${summaryText.title || "Your Nutrition Action Plan"}</h1>
+            <p class="greeting">${summaryText.greeting || "Hello,"}</p>
+          </div>
+          
+          <div class="print-container">
+            <div class="summary-box">
+              <p>${summaryText.encouraging_summary}</p>
+            </div>
+            
+            <h2 class="section-title">Your Action Goals</h2>
+            <ul class="goals-list">
+              ${summaryText.actionable_goals?.map(goal => `<li>${goal}</li>`).join('') || ''}
+            </ul>
+            
+            <h2 class="section-title">Key Takeaways</h2>
+            <div class="takeaways-grid">
+               ${summaryText.key_takeaways?.map(ta => `
+                 <div class="takeaway-card">
+                    <div class="takeaway-icon-placeholder">✨</div>
+                    <p class="takeaway-text">${ta.text}</p>
+                 </div>
+               `).join('') || ''}
+            </div>
+            
+            <div class="footer">
+              <p>${summaryText.closing_encouragement || "You've got this!"}</p>
+            </div>
+          </div>
         </body>
       </html>
     `);

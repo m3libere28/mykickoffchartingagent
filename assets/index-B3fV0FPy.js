@@ -134,17 +134,17 @@ Error generating stack: `+s.message+`
             
             <h2 class="section-title">Your Action Goals</h2>
             <ul class="goals-list">
-              ${v.actionable_goals?.map(X=>`<li>${X}</li>`).join("")||""}
+              ${v?.actionable_goals?.map(X=>`<li>${X}</li>`)?.join("")||""}
             </ul>
             
             <h2 class="section-title">Key Takeaways</h2>
             <div class="takeaways-grid">
-               ${v.key_takeaways?.map(X=>`
+               ${v?.key_takeaways?.map(X=>`
                  <div class="takeaway-card">
                     <div class="takeaway-icon-placeholder">✨</div>
                     <p class="takeaway-text">${X.text}</p>
                  </div>
-               `).join("")||""}
+               `)?.join("")||""}
             </div>
             
             <div class="footer">

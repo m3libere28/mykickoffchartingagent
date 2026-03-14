@@ -306,17 +306,17 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
             
             <h2 class="section-title">Your Action Goals</h2>
             <ul class="goals-list">
-              ${summaryText.actionable_goals?.map(goal => `<li>${goal}</li>`).join('') || ''}
+              ${summaryText?.actionable_goals?.map(goal => `<li>${goal}</li>`)?.join('') || ''}
             </ul>
             
             <h2 class="section-title">Key Takeaways</h2>
             <div class="takeaways-grid">
-               ${summaryText.key_takeaways?.map(ta => `
+               ${summaryText?.key_takeaways?.map(ta => `
                  <div class="takeaway-card">
                     <div class="takeaway-icon-placeholder">✨</div>
                     <p class="takeaway-text">${ta.text}</p>
                  </div>
-               `).join('') || ''}
+               `)?.join('') || ''}
             </div>
             
             <div class="footer">

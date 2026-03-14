@@ -36,9 +36,11 @@ app.get('/api/health', (req, res) => {
 // Import Routes
 const authRoutes = require('./routes/auth');
 const extractRoutes = require('./routes/extract');
+const followUpRoutes = require('./routes/followUp');
 
 app.use('/api', authRoutes);
 app.use('/api/extract-adime', extractRoutes);
+app.use('/api/extract-followup', followUpRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

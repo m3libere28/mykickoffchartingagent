@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2 } from 'lucide-react';
+import { Copy, Check, AlertTriangle, ArrowLeft, ActivitySquare, CheckCircle2, TrendingUp, Lightbulb } from 'lucide-react';
 
 const SectionCard = ({ title, content, id, onTextChange, onCopy, copiedSection }) => {
   const textareaRef = useRef(null);
@@ -200,6 +200,60 @@ ${data.monitoring_evaluation || ''}
         <SectionCard title="Intervention" id="intervention" content={data.intervention} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
         <SectionCard title="Monitoring & Evaluation" id="monitoring_evaluation" content={data.monitoring_evaluation} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} />
       </div>
+
+      {/* Follow-Up Specific Cards */}
+      {data.is_follow_up && (
+        <div className="mt-10 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          
+          {/* Section Header */}
+          <div className="flex items-center mb-2">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-brand-300 dark:via-brand-700 to-transparent" />
+            <span className="px-4 text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400">Follow-Up Analysis</span>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-brand-300 dark:via-brand-700 to-transparent" />
+          </div>
+
+          {/* Progress Summary */}
+          {data.progress_summary && (
+            <div className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-darkSurface-border/50 p-4 sm:p-6 relative group transition-all duration-300">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-bold tracking-widest text-emerald-700 dark:text-emerald-400 font-heading uppercase flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                  Progress Summary
+                </h3>
+                <div className="bg-emerald-50 dark:bg-emerald-900/30 p-1.5 rounded-lg">
+                  <TrendingUp size={16} className="text-emerald-600 dark:text-emerald-400" />
+                </div>
+              </div>
+              <p className="text-slate-700 dark:text-darkSurface-muted whitespace-pre-wrap leading-relaxed font-medium">
+                {data.progress_summary}
+              </p>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {data.recommendations && data.recommendations.length > 0 && (
+            <div className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-darkSurface-border/50 p-4 sm:p-6 relative group transition-all duration-300">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-bold tracking-widest text-amber-700 dark:text-amber-400 font-heading uppercase flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 dark:bg-amber-500 mr-2 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
+                  Treatment Recommendations
+                </h3>
+                <div className="bg-amber-50 dark:bg-amber-900/30 p-1.5 rounded-lg">
+                  <Lightbulb size={16} className="text-amber-600 dark:text-amber-400" />
+                </div>
+              </div>
+              <ul className="space-y-3">
+                {data.recommendations.map((rec, idx) => (
+                  <li key={idx} className="flex items-start">
+                    <span className="w-6 h-6 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 mr-3">{idx + 1}</span>
+                    <span className="text-slate-700 dark:text-darkSurface-muted font-medium leading-relaxed">{rec}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
     </div>
   );

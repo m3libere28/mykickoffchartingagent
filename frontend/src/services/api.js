@@ -51,4 +51,22 @@ export const uploadFiles = async (files) => {
   return response.data;
 };
 
+export const uploadFollowUpFiles = async (previousFiles, newFiles) => {
+  const formData = new FormData();
+  
+  for (let i = 0; i < previousFiles.length; i++) {
+    formData.append('previousFiles', previousFiles[i]);
+  }
+  for (let i = 0; i < newFiles.length; i++) {
+    formData.append('newFiles', newFiles[i]);
+  }
+
+  const response = await api.post('/extract-followup', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
 export default api;

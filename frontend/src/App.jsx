@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, HeartPulse, Calculator, Moon, Sun } from 'lucide-react';
+import { LogOut, HeartPulse, Calculator, Moon, Sun, FileText, History } from 'lucide-react';
 import emilyImg from './assets/emily.jpg';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import FollowUpDashboard from './components/FollowUpDashboard';
 import ResultsView from './components/ResultsView';
 import Calculators from './components/Calculators';
 import SplashPage from './components/SplashPage';
@@ -16,6 +17,7 @@ function App() {
   const [isCalculatorsOpen, setIsCalculatorsOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [activeTab, setActiveTab] = useState('initial'); // 'initial' or 'followup'
 
   useEffect(() => {
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -52,6 +54,7 @@ function App() {
     await logout();
     setIsAuthenticated(false);
     setResultsData(null);
+    setActiveTab('initial');
   };
 
   // Wait for splash to finish AND auth check to finish before showing main content
@@ -87,7 +90,7 @@ function App() {
           <div className="flex justify-between items-center h-20">
             <div 
               className="flex flex-col items-center justify-center cursor-pointer group" 
-              onClick={() => setResultsData(null)}
+              onClick={() => { setResultsData(null); }}
             >
               <div className="mr-3 sm:mr-4 bg-transparent p-1 rounded-full shadow-[0_4px_12px_rgba(236,72,153,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
                 <img src={emilyImg} alt="Dietitian Profile" className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded-full" />
@@ -135,7 +138,43 @@ function App() {
         
         <div className="w-full max-w-5xl relative z-10 transition-all duration-500 ease-in-out">
             {!resultsData ? (
-            <Dashboard onUploadSuccess={(data) => setResultsData(data)} />
+              <>
+                {/* Tab Navigation */}
+                <div className="flex items-center justify-center sm:justify-start mb-8">
+                  <div className="bg-white dark:bg-darkSurface-card rounded-2xl p-1.5 shadow-sm border border-slate-200/60 dark:border-darkSurface-border/60 flex">
+                    <button
+                      onClick={() => setActiveTab('initial')}
+                      className={`flex items-center px-4 sm:px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                        activeTab === 'initial'
+                          ? 'bg-gradient-to-r from-brand-500 to-accent-500 text-white shadow-md shadow-brand-500/20'
+                          : 'text-slate-500 dark:text-darkSurface-muted hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-darkSurface-elevated'
+                      }`}
+                    >
+                      <FileText size={16} className="mr-2" />
+                      <span className="hidden sm:inline">Initial Note</span>
+                      <span className="sm:hidden">Initial</span>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('followup')}
+                      className={`flex items-center px-4 sm:px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                        activeTab === 'followup'
+                          ? 'bg-gradient-to-r from-brand-500 to-accent-500 text-white shadow-md shadow-brand-500/20'
+                          : 'text-slate-500 dark:text-darkSurface-muted hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-darkSurface-elevated'
+                      }`}
+                    >
+                      <History size={16} className="mr-2" />
+                      <span className="hidden sm:inline">Follow-Up</span>
+                      <span className="sm:hidden">Follow-Up</span>
+                    </button>
+                  </div>
+                </div>
+
+                {activeTab === 'initial' ? (
+                  <Dashboard onUploadSuccess={(data) => setResultsData(data)} />
+                ) : (
+                  <FollowUpDashboard onUploadSuccess={(data) => setResultsData(data)} />
+                )}
+              </>
             ) : (
             <ResultsView 
               data={resultsData} 

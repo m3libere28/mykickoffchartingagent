@@ -72,7 +72,7 @@ REQUIRED JSON OUTPUT SCHEMA:
 }
 Return only valid JSON matching the required schema.`;
 
-exports.generateFollowUpDraftADIME = async (previousData, newData) => {
+exports.generateFollowUpDraftADIME = async (previousData, newData, preferences) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
   });

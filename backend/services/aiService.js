@@ -61,7 +61,7 @@ REQUIRED JSON OUTPUT SCHEMA:
 If the note is too complete, still return a partial draft, identify what is missing in missing_items, set needs_review to true, and add helpful review_notes.
 Return only valid JSON matching the required schema.`;
 
-exports.generateDraftADIME = async (extractedData) => {
+exports.generateDraftADIME = async (extractedData, preferences) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
   });

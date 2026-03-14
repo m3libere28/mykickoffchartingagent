@@ -33,7 +33,7 @@ Error generating stack: `+s.message+`
           </style>
         </head>
         <body>
-          \${summaryText.replace(/\\n/g, '<br/>')}
+          ${v.replace(/\n/g,"<br/>")}
         </body>
       </html>
     `),Q.document.close(),setTimeout(()=>{Q.print()},250)},$=Q=>{let X="";Q==="markdown"?X=`### ASSESSMENT

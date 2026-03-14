@@ -183,155 +183,11 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
   };
 
   const handlePrint = () => {
-    // A simple approach is to open a new window, write the summary, and call print()
-    if (!summaryText) return;
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Patient Summary</title>
-          <style>
-            @page { margin: 0; size: letter; }
-            body { 
-              font-family: 'Inter', -apple-system, sans-serif; 
-              color: #1e293b; 
-              margin: 0;
-              padding: 0;
-              background: white;
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
-            }
-            .print-container {
-              padding: 50px 60px;
-              max-width: 100%;
-            }
-            .header-banner {
-              background: #f0fdf4;
-              border-bottom: 4px solid #10b981;
-              padding: 40px 60px;
-              margin-bottom: 40px;
-            }
-            h1 { color: #065f46; margin: 0 0 10px 0; font-size: 32px; font-weight: 800; }
-            .greeting { color: #047857; font-size: 18px; font-weight: 500; margin: 0; }
-            
-            .summary-box {
-              background: #f8fafc;
-              border-left: 4px solid #3b82f6;
-              padding: 24px;
-              border-radius: 0 12px 12px 0;
-              margin-bottom: 40px;
-            }
-            .summary-box p { margin: 0; font-size: 16px; line-height: 1.6; color: #334155; }
-            
-            .section-title {
-              color: #0f172a;
-              font-size: 20px;
-              font-weight: 700;
-              text-transform: uppercase;
-              letter-spacing: 1.5px;
-              border-bottom: 2px solid #e2e8f0;
-              padding-bottom: 12px;
-              margin-bottom: 24px;
-              margin-top: 40px;
-            }
-            
-            .goals-list { padding-left: 0; list-style: none; margin: 0 0 40px 0; }
-            .goals-list li {
-              position: relative;
-              padding-left: 32px;
-              margin-bottom: 16px;
-              font-size: 16px;
-              line-height: 1.5;
-              color: #1e293b;
-            }
-            .goals-list li::before {
-              content: '✓';
-              position: absolute;
-              left: 0;
-              top: 0;
-              color: #10b981;
-              font-weight: bold;
-              font-size: 18px;
-            }
-            
-            .takeaways-grid {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              gap: 20px;
-              margin-bottom: 40px;
-            }
-            .takeaway-card {
-              background: #ffffff;
-              border: 1px solid #e2e8f0;
-              border-radius: 12px;
-              padding: 20px;
-              display: flex;
-              align-items: flex-start;
-              gap: 16px;
-            }
-            .takeaway-icon-placeholder {
-              width: 32px;
-              height: 32px;
-              background: #f1f5f9;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 16px;
-              flex-shrink: 0;
-            }
-            .takeaway-text { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 500; color: #334155; padding-top: 5px; }
-            
-            .footer {
-              text-align: center;
-              margin-top: 60px;
-              padding-top: 30px;
-              border-top: 1px dashed #cbd5e1;
-              color: #64748b;
-              font-size: 16px;
-              font-style: italic;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header-banner">
-            <h1>${summaryText.title || "Your Nutrition Action Plan"}</h1>
-            <p class="greeting">${summaryText.greeting || "Hello,"}</p>
-          </div>
-          
-          <div class="print-container">
-            <div class="summary-box">
-              <p>${summaryText.encouraging_summary}</p>
-            </div>
-            
-            <h2 class="section-title">Your Action Goals</h2>
-            <ul class="goals-list">
-              ${summaryText?.actionable_goals?.map(goal => `<li>${goal}</li>`)?.join('') || ''}
-            </ul>
-            
-            <h2 class="section-title">Key Takeaways</h2>
-            <div class="takeaways-grid">
-               ${summaryText?.key_takeaways?.map(ta => `
-                 <div class="takeaway-card">
-                    <div class="takeaway-icon-placeholder">✨</div>
-                    <p class="takeaway-text">${ta.text}</p>
-                 </div>
-               `)?.join('') || ''}
-            </div>
-            
-            <div class="footer">
-              <p>${summaryText.closing_encouragement || "You've got this!"}</p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-    // Wait for styles/content to load before printing
+    // Hide everything else and just trigger the browser's native print function
+    // We already have tailwind print modifiers set up in the HTML to handle the layout
     setTimeout(() => {
-      printWindow.print();
-      // Optional: printWindow.close();
-    }, 250);
+      window.print();
+    }, 100);
   };
 
   const handleCopyFormatted = (format) => {
@@ -575,15 +431,15 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
       {showSummaryModal && (
         <>
           <div 
-            className="fixed inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm z-[100] transition-opacity duration-300 flex justify-center items-center p-4 sm:p-6"
+            className="fixed inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm z-[100] transition-opacity duration-300 flex justify-center items-center p-4 sm:p-6 print:p-0 print:bg-white print:dark:bg-white"
             onClick={() => !isGeneratingSummary && setShowSummaryModal(false)}
           >
             <div 
-              className="bg-white dark:bg-darkSurface w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-100 dark:border-darkSurface-border/50 flex flex-col max-h-[90vh] overflow-hidden transform transition-all animate-in zoom-in-95 duration-200"
+              className="bg-white dark:bg-darkSurface w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-100 dark:border-darkSurface-border/50 flex flex-col max-h-[90vh] overflow-hidden transform transition-all animate-in zoom-in-95 duration-200 print:max-w-none print:max-h-none print:shadow-none print:border-none print:rounded-none"
               onClick={e => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="px-6 py-5 border-b border-slate-100 dark:border-darkSurface-border/50 flex justify-between items-center bg-slate-50/50 dark:bg-darkSurface/50">
+              <div className="px-6 py-5 border-b border-slate-100 dark:border-darkSurface-border/50 flex justify-between items-center bg-slate-50/50 dark:bg-darkSurface/50 print:hidden">
                 <div className="flex items-center">
                   <div className="p-2 bg-brand-100 dark:bg-brand-900/30 rounded-xl mr-3">
                     <FileText className="text-brand-600 dark:text-brand-400" size={20} />
@@ -601,7 +457,7 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
               </div>
 
               {/* Content */}
-              <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-slate-50/30 dark:bg-darkSurface-card/30">
+              <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-slate-50/30 dark:bg-darkSurface-card/30 print:overflow-visible print:p-0 print:bg-white">
                 {isGeneratingSummary ? (
                   <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
                      <div className="relative mb-6">
@@ -616,25 +472,83 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
                      </p>
                   </div>
                 ) : (
-                  <div className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
-                    {/* Render Basic Markdown to HTML (Handling line breaks, bold, and bullets simply for the modal visual) */}
-                    <div 
-                      className="whitespace-pre-wrap leading-relaxed space-y-4"
-                      dangerouslySetInnerHTML={{
-                        __html: summaryText
-                          ?.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>')
-                          ?.replace(/^-\\s(.*)/gm, '<li>$1</li>')
-                          ?.replace(/(<li>.*<\/li>)/s, '<ul class="pl-5 my-2 list-disc">$1</ul>') 
-                        || ''
-                      }}
-                    />
+                  <div className="flex flex-col w-full h-full bg-slate-50 dark:bg-darkSurface print:bg-white print:dark:bg-white text-left">
+                    {/* Handout Header Banner */}
+                    <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-8 text-white rounded-b-3xl shadow-md relative overflow-hidden shrink-0 print:rounded-none print:shadow-none print:border-b-4 print:border-emerald-500 print:bg-none print:bg-emerald-50">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 print:hidden"></div>
+                      <div className="relative z-10">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 print:text-emerald-800">
+                          {summaryText?.title}
+                        </h1>
+                        <p className="text-emerald-50 text-lg font-medium opacity-90 print:text-emerald-700">
+                          {summaryText?.greeting}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-6 sm:p-8 space-y-8 flex-1 print:p-0 print:pt-8">
+                      {/* Summary Section */}
+                      <div className="bg-white dark:bg-darkSurface-card rounded-2xl p-6 shadow-sm border-l-4 border-blue-500 border-y border-r border-y-slate-100 border-r-slate-100 dark:border-y-darkSurface-border dark:border-r-darkSurface-border print:border-y-0 print:border-r-0 print:shadow-none print:bg-slate-50">
+                        <p className="text-slate-700 dark:text-slate-300 text-[1.05rem] leading-relaxed print:text-slate-800">
+                          {summaryText?.encouraging_summary}
+                        </p>
+                      </div>
+
+                      {/* Goals Section */}
+                      <div>
+                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-darkSurface-muted mb-4 flex items-center print:text-slate-800 print:border-b-2 print:border-slate-200 print:pb-2">
+                          <CheckCircle2 size={16} className="mr-2 text-brand-500 print:text-emerald-600" /> Action Goals
+                        </h3>
+                        <div className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm border border-slate-100 dark:border-darkSurface-border p-2 print:border-none print:shadow-none print:p-0">
+                          <ul className="divide-y divide-slate-50 dark:divide-darkSurface-border/50 print:divide-none space-y-3">
+                            {summaryText?.actionable_goals?.map((goal, idx) => (
+                              <li key={idx} className="p-4 flex items-start group print:p-0">
+                                <span className="hidden print:inline mr-2 text-emerald-500 font-bold">✓</span>
+                                <div className="bg-brand-50 dark:bg-brand-900/30 w-8 h-8 rounded-full flex items-center justify-center shrink-0 mr-4 mt-0.5 group-hover:scale-110 group-hover:bg-brand-100 dark:group-hover:bg-brand-900/50 transition-all print:hidden">
+                                  <span className="text-brand-600 dark:text-brand-400 font-bold text-sm">{idx + 1}</span>
+                                </div>
+                                <span className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed pt-1 print:text-slate-800 print:pt-0">
+                                  {goal}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Takeaways Grid */}
+                      <div>
+                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-darkSurface-muted mb-4 flex items-center print:text-slate-800 print:border-b-2 print:border-slate-200 print:pb-2">
+                          <Lightbulb size={16} className="mr-2 text-amber-500 print:hidden" /> Key Takeaways
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-6">
+                          {summaryText?.key_takeaways?.map((ta, idx) => (
+                            <div key={idx} className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm border border-slate-100 dark:border-darkSurface-border p-5 flex items-start hover:shadow-md transition-shadow print:border print:shadow-none print:rounded-xl">
+                              <div className="bg-slate-50 dark:bg-darkSurface-elevated p-3 rounded-xl mr-4 shrink-0 print:bg-slate-100">
+                                {getIconForTakeaway(ta.icon)}
+                              </div>
+                              <p className="text-slate-700 dark:text-slate-300 font-medium text-sm leading-relaxed pt-1 print:text-slate-800">
+                                {ta.text}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="text-center pt-6 pb-2 border-t border-slate-200 border-dashed dark:border-darkSurface-border">
+                        <p className="text-slate-500 dark:text-darkSurface-muted font-medium italic print:text-slate-500">
+                          {summaryText?.closing_encouragement}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* Footer */}
               {!isGeneratingSummary && summaryText && (
-                <div className="p-5 border-t border-slate-100 dark:border-darkSurface-border/50 bg-white dark:bg-darkSurface flex justify-end gap-3">
+                <div className="p-5 border-t border-slate-100 dark:border-darkSurface-border/50 bg-white dark:bg-darkSurface flex justify-end gap-3 print:hidden">
                    <button
                     onClick={() => {
                       navigator.clipboard.writeText(summaryText);

@@ -39,40 +39,28 @@ const SplashPage = ({ onComplete }) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center overflow-hidden transition-opacity duration-1000 ${
+      className={`fixed inset-0 z-[100] bg-surface-50 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-1000 ${
         isFadingOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-accent-500/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-brand-500/20 blur-3xl pointer-events-none" />
-      
-      {/* Subtle tech background pattern */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none overflow-hidden flex flex-wrap justify-around items-center content-around p-12">
-         {Array.from({ length: 12 }).map((_, i) => (
-           <img 
-              key={i}
-              src="/mykickoffchartingagent/logo.png" 
-              className={`w-16 h-16 m-8 ${i % 2 === 0 ? 'rotate-12' : '-rotate-12'} grayscale opacity-50`} 
-              alt="" 
-           />
-         ))}
-      </div>
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-accent-300/30 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-brand-300/30 blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center max-w-lg px-6 w-full mt-[-10vh]">
         
         {/* Logo Image container with grow-in and float animation */}
         <div className="animate-in fade-in zoom-in duration-1000 ease-out fill-mode-both">
-          <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full p-1.5 bg-gradient-to-tr from-accent-400 via-brand-500 to-accent-300 shadow-2xl shadow-brand-500/30 hover:scale-105 transition-transform duration-500">
-            <div className="w-full h-full rounded-full overflow-hidden border-4 border-surface-950 bg-surface-950 flex items-center justify-center">
+          <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full p-1.5 bg-gradient-to-tr from-accent-200 via-surface-100 to-brand-200 shadow-2xl shadow-accent-200/40 hover:scale-[1.02] transition-transform duration-700">
+            <div className="w-full h-full rounded-full overflow-hidden border-4 border-white bg-white flex items-center justify-center">
                <img 
                  src="/mykickoffchartingagent/logo.png" 
                  alt="Kickoff Logo" 
-                 className="w-3/4 h-3/4 object-contain origin-center hover:scale-110 transition-transform duration-700 hover:drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                 className="w-3/4 h-3/4 object-contain origin-center hover:scale-105 transition-transform duration-700 opacity-90"
                />
             </div>
             {/* Sparkle subtle effect */}
-            <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-brand-200/50 blur-sm pointer-events-none" />
+            <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-accent-300/40 blur-md pointer-events-none" />
           </div>
         </div>
         
@@ -82,11 +70,10 @@ const SplashPage = ({ onComplete }) => {
            {/* Main Title instead of Signature */}
            <div className="relative overflow-hidden pt-4 pb-2 px-2 mt-4">
              <h1 
-               className="text-brand-500 text-5xl sm:text-6xl text-center whitespace-nowrap will-change-transform font-bold font-heading"
+               className="text-brand-600 text-4xl sm:text-5xl md:text-6xl text-center whitespace-normal sm:whitespace-nowrap leading-tight will-change-transform font-medium tracking-wide font-heading"
                style={{ 
-                  textShadow: showSignature ? "0 0 15px rgba(16,185,129,0.5), 0 0 30px rgba(16,185,129,0.3)" : "none",
                   clipPath: showSignature ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(0 0, 0 0, 0 100%, 0 100%)',
-                  transition: 'clip-path 2s cubic-bezier(0.4, 0, 0.2, 1), text-shadow 2s ease-in 1s',
+                  transition: 'clip-path 2s cubic-bezier(0.4, 0, 0.2, 1)',
                   WebkitClipPath: showSignature ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(0 0, 0 0, 0 100%, 0 100%)'
                }}
              >
@@ -96,14 +83,14 @@ const SplashPage = ({ onComplete }) => {
 
            {/* AI Subtitle */}
            <p 
-             className={`text-accent-500 font-bold tracking-[0.2em] text-sm uppercase mt-2 transform transition-all duration-700 ${
+             className={`text-accent-600 font-medium tracking-[0.2em] text-sm uppercase mt-2 transform transition-all duration-700 ${
                showSubtitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
              }`}
            >
              AI CLINICAL ASSISTANT
            </p>
 
-           <p className={`text-slate-400 font-medium tracking-widest text-xs uppercase mt-8 transform transition-all duration-1000 ${
+           <p className={`text-surface-400 font-medium tracking-widest text-xs uppercase mt-8 transform transition-all duration-1000 ${
                showSubtitle ? 'opacity-100' : 'opacity-0'
              }`}>
              Powered by OpenAI

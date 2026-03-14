@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import emilyImg from '../assets/emily.jpg';
-import { Apple, Carrot, Cherry, Citrus, Grape, LeafyGreen } from 'lucide-react';
+import BackgroundPattern from './BackgroundPattern';
 
 const SplashPage = ({ onComplete }) => {
   const [showSignature, setShowSignature] = useState(false);
@@ -43,6 +43,8 @@ const SplashPage = ({ onComplete }) => {
         isFadingOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
+      <BackgroundPattern />
+      
       {/* Background Decor */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-accent-300/30 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-brand-300/30 blur-3xl pointer-events-none" />

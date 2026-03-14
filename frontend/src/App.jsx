@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 import ResultsView from './components/ResultsView';
 import Calculators from './components/Calculators';
 import SplashPage from './components/SplashPage';
+import BackgroundPattern from './components/BackgroundPattern';
 import { checkAuthStatus, logout } from './services/api';
 
 function App() {
@@ -61,11 +62,12 @@ function App() {
   // Once splash is false, we can either Show Login (if not auth) or Auth Loading
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-300">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
+      <div className="min-h-screen bg-surface-50 dark:bg-slate-900 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-300">
+        <BackgroundPattern />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-500/10 dark:bg-brand-500/5 blur-[100px] rounded-full pointer-events-none" />
         <div className="relative flex flex-col items-center">
-            <HeartPulse className="text-emerald-500 animate-pulse mb-4" size={40} />
-            <p className="text-emerald-700 dark:text-emerald-400 font-medium tracking-wide">Initializing environment...</p>
+            <HeartPulse className="text-brand-500 animate-pulse mb-4" size={40} />
+            <p className="text-brand-700 dark:text-brand-400 font-medium tracking-wide">Initializing environment...</p>
         </div>
       </div>
     );
@@ -76,7 +78,8 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-900 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-900 dark:selection:text-emerald-100 transition-colors duration-300">
+    <div className="min-h-screen bg-surface-50 dark:bg-slate-900 flex flex-col font-sans selection:bg-brand-500/30 selection:text-brand-900 dark:selection:text-brand-100 transition-colors duration-300 relative overflow-hidden">
+      <BackgroundPattern />
       
       {/* Premium Glass Header */}
       <header className="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 shadow-[0_4px_30px_rgba(0,0,0,0.02)] transition-all">
@@ -86,18 +89,18 @@ function App() {
               className="flex flex-col items-center justify-center cursor-pointer group" 
               onClick={() => setResultsData(null)}
             >
-              <div className="mr-3 sm:mr-4 bg-transparent p-1 rounded-full shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
+              <div className="mr-3 sm:mr-4 bg-transparent p-1 rounded-full shadow-[0_4px_12px_rgba(236,72,153,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
                 <img src={emilyImg} alt="Dietitian Profile" className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded-full" />
               </div>
               <h1 className="text-xl sm:text-2xl font-bold font-heading text-slate-800 dark:text-white tracking-tight flex items-center">
-                Kickoff <span className="text-emerald-600 dark:text-emerald-400 ml-1.5 font-black hidden sm:inline">V2</span>
+                Kickoff <span className="text-brand-600 dark:text-brand-400 ml-1.5 font-black hidden sm:inline">V2</span>
               </h1>
             </div>
             
             <div className="flex items-center space-x-2 sm:space-x-4">
               <button
                 onClick={toggleDarkMode}
-                className="p-2 sm:px-4 sm:py-2.5 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all duration-200"
+                className="p-2 sm:px-4 sm:py-2.5 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all duration-200"
                 title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
                 {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -105,7 +108,7 @@ function App() {
 
               <button
                 onClick={() => setIsCalculatorsOpen(true)}
-                className="flex items-center px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-xl transition-all duration-200 border border-transparent hover:border-emerald-100/50 dark:hover:border-emerald-800 group"
+                className="flex items-center px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-xl transition-all duration-200 border border-transparent hover:border-brand-100/50 dark:hover:border-brand-800 group"
               >
                 <Calculator size={18} className="sm:mr-2 group-hover:scale-110 transition-transform duration-200" />
                 <span className="hidden sm:inline">Calculators</span>

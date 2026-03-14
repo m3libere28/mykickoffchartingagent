@@ -39,7 +39,7 @@ const Dashboard = ({ onUploadSuccess }) => {
       if (imagePreviews[file.name]) {
         return <img src={imagePreviews[file.name]} alt="preview" className="w-8 h-8 object-cover rounded shadow-sm border border-slate-200 dark:border-slate-700" />;
       }
-      return <ImageIcon className="text-emerald-500" size={24} />;
+      return <ImageIcon className="text-brand-500" size={24} />;
     }
     if (type.includes('pdf')) return <File className="text-rose-500" size={24} />;
     return <FileText className="text-blue-500" size={24} />;
@@ -148,10 +148,10 @@ const Dashboard = ({ onUploadSuccess }) => {
 
       {/* Upload Zone */}
       <div 
-        className={`relative border-2 border-dashed rounded-[2rem] p-6 flex flex-col items-center justify-center sm:p-12 text-center transition-all duration-300 ease-in-out bg-surface-50 dark:bg-surface-900/50 backdrop-blur-sm ${
+        className={`relative border-2 border-dashed rounded-[2rem] p-6 flex flex-col items-center justify-center sm:p-12 text-center transition-all duration-300 ease-in-out bg-surface-50/80 dark:bg-surface-900/50 backdrop-blur-sm ${
           isDragging 
-            ? 'border-brand-500 bg-brand-50/80 dark:bg-brand-900/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] scale-[1.02] z-10' 
-            : 'border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 hover:bg-white dark:hover:bg-surface-800 hover:shadow-xl hover:shadow-brand-500/10 dark:hover:shadow-black/20'
+            ? 'border-brand-500 bg-brand-50/80 dark:bg-brand-900/20 shadow-[0_0_40px_rgba(236,72,153,0.15)] scale-[1.02] z-10' 
+            : 'border-brand-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 hover:bg-white dark:hover:bg-surface-800 hover:shadow-xl hover:shadow-brand-500/10 dark:hover:shadow-black/20'
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -265,9 +265,9 @@ const Dashboard = ({ onUploadSuccess }) => {
                 <button
                     onClick={handleProcess}
                     disabled={!isPhiConfirmed}
-                    className={`w-full sm:w-auto px-6 sm:px-12 py-3.5 sm:py-4 font-bold font-heading tracking-wide rounded-xl shadow-[0_8px_20px_rgba(16,185,129,0.25)] transition-all duration-300 ${
+                    className={`w-full sm:w-auto px-6 sm:px-12 py-3.5 sm:py-4 font-bold font-heading tracking-wide rounded-xl shadow-[0_8px_20px_rgba(236,72,153,0.25)] transition-all duration-300 ${
                       isPhiConfirmed 
-                        ? 'bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-400 hover:to-accent-400 text-white hover:shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:-translate-y-0.5 active:scale-[0.98]'
+                        ? 'bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-400 hover:to-accent-400 text-white hover:shadow-[0_8px_25px_rgba(236,72,153,0.35)] hover:-translate-y-0.5 active:scale-[0.98]'
                         : 'bg-surface-100 dark:bg-surface-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none border border-slate-300 dark:border-slate-700'
                     }`}
                 >

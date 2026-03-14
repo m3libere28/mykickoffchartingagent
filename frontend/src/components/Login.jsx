@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { login } from '../services/api';
 import { Activity, ShieldCheck, HeartPulse } from 'lucide-react';
 import emilyImg from '../assets/emily.jpg';
+import BackgroundPattern from './BackgroundPattern';
 
 const Login = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
@@ -26,6 +27,7 @@ const Login = ({ onLoginSuccess }) => {
 
   return (
     <div className="min-h-screen bg-surface-950 flex overflow-hidden relative">
+      <BackgroundPattern />
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand-500/20 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-accent-500/20 blur-[120px] rounded-full pointer-events-none" />
 

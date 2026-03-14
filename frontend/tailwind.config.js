@@ -8,41 +8,41 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f4f7f5',
-          100: '#e3ebe5',
-          200: '#c7d6cc',
-          300: '#9bb8a4',
-          400: '#739a7e',
-          500: '#527c5e', // Sage green base
-          600: '#3e6249',
-          700: '#334f3c',
-          800: '#2b3f31',
-          900: '#243428',
+          50: '#fdf2f8',
+          100: '#fce7f3',
+          200: '#fbcfe8',
+          300: '#f9a8d4',
+          400: '#f472b6',
+          500: '#ec4899', // Classic feminine Pink
+          600: '#db2777',
+          700: '#be185d',
+          800: '#9d174d',
+          900: '#831843',
         },
         accent: {
-          50: '#fdf8f7',
-          100: '#faeeeb',
-          200: '#f3dad4',
-          300: '#e5beb5',
-          400: '#d1988b',
-          500: '#bb7464', // Soft Blush / Rose
-          600: '#a3594b',
-          700: '#88483c',
-          800: '#713e35',
-          900: '#5e362f',
+          50: '#fff1f2',
+          100: '#ffe4e6',
+          200: '#fecdd3',
+          300: '#fda4af',
+          400: '#fb7185', // Warm Peach / Coral
+          500: '#f43f5e',
+          600: '#e11d48',
+          700: '#be123c',
+          800: '#9f1239',
+          900: '#881337',
         },
         surface: {
-          50: '#fffcfb', // Cream background
-          100: '#f7f3f0',
-          200: '#ebe3de',
-          300: '#dcd1c9',
-          400: '#c5b6ac',
-          500: '#b09e93',
-          600: '#9c887d',
-          700: '#826f65',
-          800: '#6d5d54',
-          900: '#5a4d46', // Deep mocha for text
-          950: '#302824',
+          50: '#fffbf9', // Floral White/Cream background
+          100: '#fdf6f2',
+          200: '#fbeae1',
+          300: '#f5d6c6',
+          400: '#ecbeaa',
+          500: '#e1a68f',
+          600: '#d08970',
+          700: '#ab634c',
+          800: '#8f5240',
+          900: '#754537', // Deep warm espresso text
+          950: '#42241b',
         }
       },
       fontFamily: {

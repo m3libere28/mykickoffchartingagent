@@ -4,6 +4,8 @@ import emilyImg from '../assets/emily.jpg';
 import BackgroundPattern from './BackgroundPattern';
 
 const SplashPage = ({ onComplete }) => {
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
   useEffect(() => {
     // 1. Fade everything out
     const fadeOutTimer = setTimeout(() => {

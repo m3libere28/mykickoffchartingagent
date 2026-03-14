@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Upload, X, File, Image as ImageIcon, FileText, AlertTriangle, ShieldAlert, Check, HeartPulse } from 'lucide-react';
 import { uploadFiles } from '../services/api';
 import RobotLoader from './RobotLoader';
+import emilyImg from '../assets/emily.jpg';
 
 const Dashboard = ({ onUploadSuccess }) => {
   const [files, setFiles] = useState([]);
@@ -158,8 +159,8 @@ const Dashboard = ({ onUploadSuccess }) => {
         onDrop={handleDrop}
       >
         <div className="flex justify-center mb-6">
-          <div className={`p-4 rounded-2xl transition-all duration-500 ${isDragging ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/30 scale-110' : 'bg-surface-100 dark:bg-surface-800 text-brand-600 dark:text-brand-500 shadow-sm border border-slate-200 dark:border-slate-700'}`}>
-            <img src="/mykickoffchartingagent/logo.png" alt="Upload" className={`w-10 h-10 object-contain transition-all ${isDragging ? 'brightness-0 invert' : ''}`} />
+          <div className={`p-2 rounded-full transition-all duration-500 ${isDragging ? 'bg-brand-500 shadow-lg shadow-brand-500/30 scale-110' : 'bg-surface-100 dark:bg-surface-800 shadow-sm border border-slate-200 dark:border-slate-700'}`}>
+            <img src={emilyImg} alt="Dietitian Profile" className={`w-12 h-12 rounded-full object-cover transition-all ${isDragging ? 'ring-4 ring-white/50' : ''}`} />
           </div>
         </div>
         <h3 className="text-xl font-bold font-heading text-slate-800 dark:text-white mb-2">Drag & Drop Files</h3>
@@ -254,7 +255,7 @@ const Dashboard = ({ onUploadSuccess }) => {
                      <RobotLoader />
                      
                      <div className="mt-8 flex items-center bg-white dark:bg-surface-800/80 px-6 py-3 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-900/40">
-                         <img src="/mykickoffchartingagent/logo.png" className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 animate-pulse object-contain" alt="Processing" />
+                         <img src={emilyImg} className="w-8 h-8 mr-3 rounded-full animate-pulse object-cover" alt="Processing Profile" />
                          <p className="text-brand-700 dark:text-brand-400 font-bold font-heading text-base sm:text-lg tracking-wide text-center">
                              {progressMsg}
                          </p>

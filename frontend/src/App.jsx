@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LogOut, HeartPulse, Calculator, Moon, Sun } from 'lucide-react';
+import emilyImg from './assets/emily.jpg';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ResultsView from './components/ResultsView';
@@ -85,8 +86,8 @@ function App() {
               className="flex flex-col items-center justify-center cursor-pointer group" 
               onClick={() => setResultsData(null)}
             >
-              <div className="mr-3 sm:mr-4 bg-transparent p-1 rounded-xl shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
-                <img src="/mykickoffchartingagent/logo.png" alt="Kickoff Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg" />
+              <div className="mr-3 sm:mr-4 bg-transparent p-1 rounded-full shadow-[0_4px_12px_rgba(16,185,129,0.3)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300">
+                <img src={emilyImg} alt="Dietitian Profile" className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded-full" />
               </div>
               <h1 className="text-xl sm:text-2xl font-bold font-heading text-slate-800 dark:text-white tracking-tight flex items-center">
                 Kickoff <span className="text-emerald-600 dark:text-emerald-400 ml-1.5 font-black hidden sm:inline">V2</span>

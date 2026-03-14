@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { login } from '../services/api';
 import { Activity, ShieldCheck, HeartPulse } from 'lucide-react';
+import emilyImg from '../assets/emily.jpg';
 
 const Login = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
@@ -30,8 +31,8 @@ const Login = ({ onLoginSuccess }) => {
 
       <div className="flex-1 hidden lg:flex flex-col justify-center items-center relative z-10 px-12">
         <div className="max-w-lg text-left">
-          <div className="inline-flex items-center justify-center p-2 bg-surface-900/50 rounded-2xl border border-white/10 mb-8 backdrop-blur-sm shadow-xl shadow-brand-500/10 hover:scale-105 transition-transform">
-             <img src="/mykickoffchartingagent/logo.png" alt="Kickoff Logo" className="w-12 h-12 object-contain" />
+          <div className="inline-flex items-center justify-center p-1 bg-surface-900/50 rounded-full border border-white/10 mb-8 backdrop-blur-sm shadow-xl shadow-brand-500/10 hover:scale-105 transition-transform">
+             <img src={emilyImg} alt="Dietitian Profile" className="w-12 h-12 object-cover rounded-full" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-heading font-extrabold text-white mb-6 leading-tight">
             Streamline your <br className="hidden sm:block"/><span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-brand-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">clinical drafting.</span>
@@ -57,8 +58,8 @@ const Login = ({ onLoginSuccess }) => {
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-500/20 to-transparent blur-2xl rounded-bl-full pointer-events-none"></div>
           
           <div className="lg:hidden flex justify-center mb-8">
-            <div className="p-2 bg-surface-900/50 rounded-2xl border border-white/10 shadow-xl">
-               <img src="/mykickoffchartingagent/logo.png" alt="Kickoff Logo" className="w-12 h-12 object-contain" />
+            <div className="p-1 bg-surface-900/50 rounded-full border border-white/10 shadow-xl">
+               <img src={emilyImg} alt="Dietitian Profile" className="w-12 h-12 object-cover rounded-full" />
             </div>
           </div>
 

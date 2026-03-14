@@ -6,7 +6,7 @@ const icons = [Apple, Carrot, Cherry, Citrus, Grape, LeafyGreen];
 const BackgroundPattern = () => {
   // Generate a stable grid map for scattering the icons
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.04]">
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.04] dark:opacity-[0.08]">
       {/* Pattern container */}
       <div className="flex flex-wrap items-center justify-around w-[150%] h-[150%] -ml-[25%] -mt-[25%]">
         {Array.from({ length: 40 }).map((_, i) => {
@@ -16,7 +16,7 @@ const BackgroundPattern = () => {
            const rotateCls = i % 2 === 0 ? 'rotate-12' : '-rotate-12';
            
            return (
-             <div key={i} className={`m-8 sm:m-16 text-brand-700 ${sizeCls} ${rotateCls}`}>
+             <div key={i} className={`m-8 sm:m-16 text-brand-700 dark:text-brand-400 ${sizeCls} ${rotateCls}`}>
                <Icon className="w-full h-full" strokeWidth={1.5} />
              </div>
            );

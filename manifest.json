@@ -1,0 +1,20 @@
+{
+  "name": "Kickoff Charting V2",
+  "short_name": "Kickoff",
+  "start_url": "/mykickoffchartingagent/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#fdf2f8",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

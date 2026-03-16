@@ -191,15 +191,33 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
   };
 
   const handleCopyFormatted = (format) => {
-    let fullText = '';
+    const template = `Chief Complaint / Purpose of Visit:
+${data.chief_complaint || ''}
+
+Section 1 – Assessment Notes:
+${data.section1_assessment || ''}
+
+Section 2 – Assessment Notes: Going Deeper
+${data.section2_assessment_deeper || ''}
+
+Section 3 – Diagnosis Notes
+${data.section3_diagnosis || ''}
+
+Section 4– Intervention Notes
+${data.section4_intervention || ''}
+
+Section 5– Monitoring & Evaluation
+${data.section5_monitoring || ''}
+
+Section 6– Fitness Intervention, Monitoring and Evaluation
+${data.section6_fitness || ''}`;
+
+    let fullText = template;
     
     if (format === 'markdown') {
-      fullText = `### ASSESSMENT\n${data.assessment || ''}\n\n### DIAGNOSIS\n${data.diagnosis || ''}\n\n### INTERVENTION\n${data.intervention || ''}\n\n### MONITORING & EVALUATION\n${data.monitoring_evaluation || ''}`.trim();
+      fullText = `### Chief Complaint / Purpose of Visit:\n${data.chief_complaint || ''}\n\n### Section 1 – Assessment Notes:\n${data.section1_assessment || ''}\n\n### Section 2 – Assessment Notes: Going Deeper\n${data.section2_assessment_deeper || ''}\n\n### Section 3 – Diagnosis Notes\n${data.section3_diagnosis || ''}\n\n### Section 4– Intervention Notes\n${data.section4_intervention || ''}\n\n### Section 5– Monitoring & Evaluation\n${data.section5_monitoring || ''}\n\n### Section 6– Fitness Intervention, Monitoring and Evaluation\n${data.section6_fitness || ''}`;
     } else if (format === 'epic') {
-      fullText = `*** ASSESSMENT ***\n${data.assessment || ''}\n\n*** DIAGNOSIS ***\n${data.diagnosis || ''}\n\n*** INTERVENTION ***\n${data.intervention || ''}\n\n*** MONITORING & EVALUATION ***\n${data.monitoring_evaluation || ''}`.trim();
-    } else {
-      // Plain text
-      fullText = `ASSESSMENT:\n${data.assessment || ''}\n\nDIAGNOSIS:\n${data.diagnosis || ''}\n\nINTERVENTION:\n${data.intervention || ''}\n\nMONITORING & EVALUATION:\n${data.monitoring_evaluation || ''}`.trim();
+      fullText = `*** Chief Complaint / Purpose of Visit: ***\n${data.chief_complaint || ''}\n\n*** Section 1 – Assessment Notes: ***\n${data.section1_assessment || ''}\n\n*** Section 2 – Assessment Notes: Going Deeper ***\n${data.section2_assessment_deeper || ''}\n\n*** Section 3 – Diagnosis Notes ***\n${data.section3_diagnosis || ''}\n\n*** Section 4– Intervention Notes ***\n${data.section4_intervention || ''}\n\n*** Section 5– Monitoring & Evaluation ***\n${data.section5_monitoring || ''}\n\n*** Section 6– Fitness Intervention, Monitoring and Evaluation ***\n${data.section6_fitness || ''}`;
     }
     
     handleCopy(fullText, 'all');
@@ -352,65 +370,14 @@ const ResultsView = ({ data, onUpdateData, onReset }) => {
 
       {/* Draft Cards */}
       <div className="space-y-6">
-        <SectionCard title="Assessment" id="assessment" content={data.assessment} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
-        <SectionCard title="Diagnosis" id="diagnosis" content={data.diagnosis} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
-        <SectionCard title="Intervention" id="intervention" content={data.intervention} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
-        <SectionCard title="Monitoring & Evaluation" id="monitoring_evaluation" content={data.monitoring_evaluation} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Chief Complaint" id="chief_complaint" content={data.chief_complaint} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Section 1 – Assessment Notes" id="section1_assessment" content={data.section1_assessment} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Section 2 – Assessment Notes: Going Deeper" id="section2_assessment_deeper" content={data.section2_assessment_deeper} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Section 3 – Diagnosis Notes" id="section3_diagnosis" content={data.section3_diagnosis} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Section 4 – Intervention Notes" id="section4_intervention" content={data.section4_intervention} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Section 5 – Monitoring & Evaluation" id="section5_monitoring" content={data.section5_monitoring} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
+        <SectionCard title="Section 6 – Fitness Intervention" id="section6_fitness" content={data.section6_fitness} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
       </div>
-
-      {/* Follow-Up Specific Cards */}
-      {data.is_follow_up && (
-        <div className="mt-10 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          
-          {/* Section Header */}
-          <div className="flex items-center mb-2">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-brand-300 dark:via-brand-700 to-transparent" />
-            <span className="px-4 text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400">Follow-Up Analysis</span>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-brand-300 dark:via-brand-700 to-transparent" />
-          </div>
-
-          {/* Progress Summary */}
-          {data.progress_summary && (
-            <div className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-darkSurface-border/50 p-4 sm:p-6 relative group transition-all duration-300">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-sm font-bold tracking-widest text-emerald-700 dark:text-emerald-400 font-heading uppercase flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                  Progress Summary
-                </h3>
-                <div className="bg-emerald-50 dark:bg-emerald-900/30 p-1.5 rounded-lg">
-                  <TrendingUp size={16} className="text-emerald-600 dark:text-emerald-400" />
-                </div>
-              </div>
-              <p className="text-slate-700 dark:text-darkSurface-muted whitespace-pre-wrap leading-relaxed font-medium">
-                {data.progress_summary}
-              </p>
-            </div>
-          )}
-
-          {/* Recommendations */}
-          {data.recommendations && data.recommendations.length > 0 && (
-            <div className="bg-white dark:bg-darkSurface-card rounded-2xl shadow-sm hover:shadow-md border border-slate-100 dark:border-darkSurface-border/50 p-4 sm:p-6 relative group transition-all duration-300">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-sm font-bold tracking-widest text-amber-700 dark:text-amber-400 font-heading uppercase flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 dark:bg-amber-500 mr-2 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
-                  Treatment Recommendations
-                </h3>
-                <div className="bg-amber-50 dark:bg-amber-900/30 p-1.5 rounded-lg">
-                  <Lightbulb size={16} className="text-amber-600 dark:text-amber-400" />
-                </div>
-              </div>
-              <ul className="space-y-3">
-                {data.recommendations.map((rec, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <span className="w-6 h-6 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 mr-3">{idx + 1}</span>
-                    <span className="text-slate-700 dark:text-darkSurface-muted font-medium leading-relaxed">{rec}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Action Footer */}
       <div className="mt-10 pt-8 border-t border-slate-200/60 dark:border-darkSurface-border flex justify-end">

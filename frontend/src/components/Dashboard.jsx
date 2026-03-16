@@ -122,7 +122,7 @@ const Dashboard = ({ onUploadSuccess }) => {
       const preferences = localStorage.getItem('kickoff_preferences');
       const response = await uploadFiles(filesToUpload, preferences);
       
-      if (response && (response.assessment || response.diagnosis || response.intervention || response.monitoring_evaluation)) {
+      if (response && (response.chief_complaint || response.section1_assessment || response.section3_diagnosis)) {
         onUploadSuccess(response);
       } else {
         throw new Error('Invalid response format received from AI server');

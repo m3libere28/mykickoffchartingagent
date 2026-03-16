@@ -49,10 +49,13 @@ MONITORING & EVALUATION Requirements:
 
 REQUIRED JSON OUTPUT SCHEMA:
 {
-  "assessment": "string",
-  "diagnosis": "string",
-  "intervention": "string",
-  "monitoring_evaluation": "string",
+  "chief_complaint": "string",
+  "section1_assessment": "string",
+  "section2_assessment_deeper": "string",
+  "section3_diagnosis": "string",
+  "section4_intervention": "string",
+  "section5_monitoring": "string",
+  "section6_fitness": "string",
   "missing_items": ["string"],
   "follow_up_suggestions": ["string"],
   "needs_review": true,

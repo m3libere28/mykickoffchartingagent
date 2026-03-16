@@ -61,11 +61,8 @@ exports.processFollowUpFiles = async (req, res) => {
     
     // Attach PHI warning flag and follow-up specific fields
     validatedOutput.phi_warning = phiWarning;
+    // Ensure follow-up flags exist
     validatedOutput.is_follow_up = true;
-    
-    // Ensure follow-up fields exist
-    if (!validatedOutput.progress_summary) validatedOutput.progress_summary = '';
-    if (!validatedOutput.recommendations) validatedOutput.recommendations = [];
 
     // Clean up temporary files
     cleanupFiles(allFiles);

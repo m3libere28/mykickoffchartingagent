@@ -59,12 +59,13 @@ MONITORING & EVALUATION:
 
 REQUIRED JSON OUTPUT SCHEMA:
 {
-  "assessment": "string — include comparison to prior visit",
-  "diagnosis": "string — note if new, ongoing, or resolved",
-  "intervention": "string — reference prior interventions",
-  "monitoring_evaluation": "string — compare to prior data",
-  "progress_summary": "string — concise summary comparing previous status to current, noting improvements, regressions, stable areas, and adherence to prior plan",
-  "recommendations": ["string — specific, actionable recommendations informed by the full treatment trajectory"],
+  "chief_complaint": "string — reference how it has evolved since prior visit",
+  "section1_assessment": "string — Weight, PMH, Nutrition History, Diagnoses, Goals, Allergies, Meds (include comparison to prior visit)",
+  "section2_assessment_deeper": "string — Anthropometrics, Barriers, Food recall, Social Factors (include comparison to prior visit)",
+  "section3_diagnosis": "string — note if new, ongoing, or resolved",
+  "section4_intervention": "string — reference prior interventions",
+  "section5_monitoring": "string — compare to prior data",
+  "section6_fitness": "string — note fitness comparisons",
   "missing_items": ["string"],
   "follow_up_suggestions": ["string"],
   "needs_review": true,

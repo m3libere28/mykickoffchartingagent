@@ -90,7 +90,7 @@ function App() {
       <BackgroundPattern />
       
       {/* Premium Glass Header */}
-      <header className="fixed top-0 w-full z-50 bg-white/80 dark:bg-darkSurface/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-darkSurface-border/60 shadow-[0_4px_30px_rgba(0,0,0,0.02)] transition-all">
+      <header className="fixed top-0 w-full z-50 bg-white/80 dark:bg-darkSurface/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-darkSurface-border/60 shadow-[0_4px_30px_rgba(0,0,0,0.02)] transition-all print:hidden">
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <div className="flex justify-between items-center h-20">
             <div 
@@ -145,9 +145,9 @@ function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-grow pt-24 sm:pt-32 pb-16 px-4 sm:px-6 relative flex flex-col items-center">
+      <main className="flex-grow pt-24 sm:pt-32 pb-16 px-4 sm:px-6 relative flex flex-col items-center print:p-0 print:block">
         {/* Subtle background decoration */}
-        <div className="absolute top-0 left-0 w-full h-64 sm:h-96 bg-gradient-to-b from-slate-100 dark:from-darkSurface-elevated/50 to-transparent pointer-events-none -z-10" />
+        <div className="absolute top-0 left-0 w-full h-64 sm:h-96 bg-gradient-to-b from-slate-100 dark:from-darkSurface-elevated/50 to-transparent pointer-events-none -z-10 print:hidden" />
         
         <div className="w-full max-w-5xl relative z-10 transition-all duration-500 ease-in-out">
             {!resultsData ? (
@@ -215,7 +215,7 @@ function App() {
       />
 
       {/* Footer */}
-      <footer className="mt-auto py-8 text-center relative z-10">
+      <footer className="mt-auto py-8 text-center relative z-10 print:hidden">
         <p className="text-sm font-medium text-slate-400 dark:text-darkSurface-muted/60">
           Local Draft-Assist Tool • Always review output before final charting
         </p>

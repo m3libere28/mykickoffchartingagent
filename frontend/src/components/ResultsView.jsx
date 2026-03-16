@@ -228,7 +228,7 @@ ${data.section6_fitness || ''}`;
     <div className="w-full mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Top Navigation / Actions */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-slate-200/60 dark:border-darkSurface-border">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-slate-200/60 dark:border-darkSurface-border print:hidden">
         <button 
           onClick={onReset}
           className="flex items-center justify-center text-slate-500 dark:text-darkSurface-muted hover:text-slate-800 dark:hover:text-slate-200 font-semibold transition-colors group mb-4 sm:mb-0 bg-white dark:bg-darkSurface-card px-4 py-3 sm:py-2 rounded-xl shadow-sm border border-slate-100 dark:border-darkSurface-border hover:shadow-md"
@@ -286,7 +286,7 @@ ${data.section6_fitness || ''}`;
       </div>
 
       {/* Main Draft Label */}
-      <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 border border-rose-200/60 dark:border-rose-900/50 p-4 sm:p-5 rounded-2xl mb-8 shadow-sm relative overflow-hidden group">
+      <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 border border-rose-200/60 dark:border-rose-900/50 p-4 sm:p-5 rounded-2xl mb-8 shadow-sm relative overflow-hidden group print:hidden">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-rose-400 to-pink-400 dark:from-rose-600 dark:to-pink-600" />
         <div className="flex items-start sm:items-center text-left">
           <div className="bg-rose-100 dark:bg-rose-900/50 max-sm:p-2 sm:p-2.5 rounded-xl mr-4 shrink-0 mt-0.5 sm:mt-0 transition-transform group-hover:scale-110 duration-300">
@@ -306,7 +306,7 @@ ${data.section6_fitness || ''}`;
 
       {/* PHI Warning */}
       {data.phi_warning && (
-        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50 p-4 sm:p-5 rounded-2xl mb-8 shadow-sm flex items-start animate-in slide-in-from-top-4">
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50 p-4 sm:p-5 rounded-2xl mb-8 shadow-sm flex items-start animate-in slide-in-from-top-4 print:hidden">
           <div className="bg-amber-100/50 dark:bg-amber-900/50 p-2.5 rounded-xl mr-4 shrink-0 transition-transform hover:scale-110 duration-300">
              <AlertTriangle className="text-amber-500 dark:text-amber-500" size={24} />
           </div>
@@ -321,7 +321,7 @@ ${data.section6_fitness || ''}`;
 
       {/* Attention Required / Validation Flags */}
       {data.needs_review && (
-        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-100 dark:border-indigo-900/50 p-5 sm:p-6 rounded-2xl mb-10 shadow-sm relative overflow-hidden">
+        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-100 dark:border-indigo-900/50 p-5 sm:p-6 rounded-2xl mb-10 shadow-sm relative overflow-hidden print:hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 dark:bg-indigo-400/5 rounded-bl-full pointer-events-none" />
           
           <h4 className="text-indigo-900 dark:text-indigo-300 font-bold font-heading text-lg mb-5 flex items-center">
@@ -369,7 +369,7 @@ ${data.section6_fitness || ''}`;
       )}
 
       {/* Draft Cards */}
-      <div className="space-y-6">
+      <div className="space-y-6 print:hidden">
         <SectionCard title="Chief Complaint" id="chief_complaint" content={data.chief_complaint} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
         <SectionCard title="Section 1 – Assessment Notes" id="section1_assessment" content={data.section1_assessment} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
         <SectionCard title="Section 2 – Assessment Notes: Going Deeper" id="section2_assessment_deeper" content={data.section2_assessment_deeper} onTextChange={handleTextChange} onCopy={handleCopy} copiedSection={copiedSection} smartPhrases={smartPhrases} onInsertSmartPhrase={handleInsertSmartPhrase} />
@@ -380,7 +380,7 @@ ${data.section6_fitness || ''}`;
       </div>
 
       {/* Action Footer */}
-      <div className="mt-10 pt-8 border-t border-slate-200/60 dark:border-darkSurface-border flex justify-end">
+      <div className="mt-10 pt-8 border-t border-slate-200/60 dark:border-darkSurface-border flex justify-end print:hidden">
         <button
           onClick={handleGenerateSummary}
           disabled={isGeneratingSummary}
@@ -398,11 +398,11 @@ ${data.section6_fitness || ''}`;
       {showSummaryModal && (
         <>
           <div 
-            className="fixed inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm z-[100] transition-opacity duration-300 flex justify-center items-center p-4 sm:p-6 print:p-0 print:bg-white print:dark:bg-white"
+            className="fixed inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm z-[100] transition-opacity duration-300 flex justify-center items-center p-4 sm:p-6 print:static print:inset-auto print:bg-transparent print:p-0 print:block"
             onClick={() => !isGeneratingSummary && setShowSummaryModal(false)}
           >
             <div 
-              className="bg-white dark:bg-darkSurface w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-100 dark:border-darkSurface-border/50 flex flex-col max-h-[90vh] overflow-hidden transform transition-all animate-in zoom-in-95 duration-200 print:max-w-none print:max-h-none print:shadow-none print:border-none print:rounded-none"
+              className="bg-white dark:bg-darkSurface w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-100 dark:border-darkSurface-border/50 flex flex-col max-h-[90vh] overflow-hidden transform transition-all animate-in zoom-in-95 duration-200 print:max-w-none print:max-h-none print:shadow-none print:border-none print:rounded-none print:block print:w-full print:bg-transparent print:overflow-visible"
               onClick={e => e.stopPropagation()}
             >
               {/* Header */}
@@ -424,7 +424,7 @@ ${data.section6_fitness || ''}`;
               </div>
 
               {/* Content */}
-              <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-slate-50/30 dark:bg-darkSurface-card/30 print:overflow-visible print:p-0 print:bg-white">
+              <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-slate-50/30 dark:bg-darkSurface-card/30 print:overflow-visible print:p-0 print:bg-transparent print:block print:w-full">
                 {isGeneratingSummary ? (
                   <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
                      <div className="relative mb-6">
